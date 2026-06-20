@@ -1,0 +1,537 @@
+/* =============================================================================
+   VISION 2030 — Dual-card video showcase section
+   Matches three reference images: static, hover-vision, hover-commitment
+   ========================================================================== */
+
+:root {
+  --v30-teal: #2AAFB8;
+  --v30-teal-soft: #3DCAD3;
+  --v30-navy: #0B1220;
+  --v30-navy-light: #0F1E38;
+}
+
+/* ── Section ────────────────────────────────────────────────────────────────── */
+.vision2030 {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--v30-navy);
+  overflow: hidden;
+}
+
+.vision2030__inner {
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   BACKDROP — The large top area (cityscape + video + graphic + header text)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.vision2030__backdrop {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image: url('public/images/vision2030/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ── Cityscape silhouette background ────────────────────────────────────────── */
+.vision2030__cityscape {
+  position: absolute;
+  inset: 0;
+  background:
+    url('/images/vision2030/Vision2030 Graphic.svg') center / cover no-repeat;
+  /* Fake a dark cityscape silhouette with very low opacity image */
+  opacity: 0;
+  z-index: 0;
+}
+
+/* Use a CSS gradient to simulate the dark cityscape skyline from the reference */
+.vision2030__backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Dark navy with a subtle lighter strip in the middle for the skyline feel */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11, 18, 32, 1) 10%,
+      rgba(11, 18, 32, 0.8) 60%,
+      rgba(11, 18, 32, 1) 100%
+    );
+  z-index: 0;
+}
+
+/* Faint cityscape skyline pattern using repeating gradients */
+.vision2030__backdrop::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70%;
+  background:
+    /* Tower-like shapes from repeating gradients */
+    linear-gradient(0deg,
+      rgba(20, 35, 60, 0.6) 0%,
+      transparent 60%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 40px,
+      rgba(25, 42, 70, 0.3) 40px,
+      rgba(25, 42, 70, 0.3) 42px,
+      transparent 42px,
+      transparent 80px
+    );
+  opacity: 0.4;
+  z-index: 0;
+}
+
+/* ── Video layer ────────────────────────────────────────────────────────────── */
+.vision2030__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vision2030__video.is-visible {
+  opacity: 1;
+}
+
+/* ── Video overlay (dark when static, lighter when video active) ────────── */
+.vision2030__video-overlay {
+  position: absolute;
+  inset: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 18, 32, 0.5) 0%,
+    rgba(11, 18, 32, 0.3) 50%,
+    rgba(11, 18, 32, 0.7) 100%
+  );
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.vision2030__video-overlay.is-video-active {
+  opacity: 1;
+}
+
+/* ── Vision2030 Graphic (LEFT side visually — use 'right' in CSS because of RTL) ── */
+.vision2030__graphic {
+  position: absolute;
+  left: 0%;
+  bottom: 5%;
+  width: clamp(180px, 20vw, 280px);
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 0 32px rgba(19, 189, 132, 0.5));
+}
+
+/* ── Header text (centered over backdrop) ───────────────────────────────── */
+.vision2030__header {
+  position: relative;
+  z-index: 4;
+  text-align: center;
+  padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+  max-width: 900px;
+}
+
+.vision2030__header-content {
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 1;
+}
+
+.vision2030__header-content.is-faded {
+  opacity: 0;
+}
+
+.vision2030__eyebrow {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--emerald);
+  letter-spacing: 0.04em;
+  margin: 0 0 18px 0;
+  opacity: 0.85;
+  text-shadow: 0px 0px 12px var(--emerald);
+}
+
+.vision2030__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  margin: 0 0 6px 0;
+}
+
+.vision2030__heading-line1 {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+  display: block;
+}
+
+.vision2030__heading-line2 {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--emerald, #13BD84);
+  display: block;
+  margin-top: -2px;
+}
+
+.vision2030__body {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CARDS ROW — Two cards side by side at the bottom
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.vision2030__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Individual card ────────────────────────────────────────────────────────── */
+.vision2030__card {
+  position: relative;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  cursor: pointer;
+  transition: background 1s ease, border-color 1s ease;
+  overflow: hidden;
+  border-top: 2px solid transparent;
+}
+
+/* Vertical separator between cards (RTL: right card visually is first in DOM) */
+.vision2030__card--vision {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Card top glow line (visible only on hovered commitment card) ───────── */
+.vision2030__card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+  z-index: 2;
+}
+
+/* ── Static state — both cards equal, dark, neutral ─────────────────────── */
+.vision2030__card {
+  background: rgba(11, 18, 32, 0.6);
+}
+
+/* ── Card icon ──────────────────────────────────────────────────────────── */
+.vision2030__card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  align-self: flex-end;
+  transition: all 0.5s ease;
+}
+
+.vision2030__card-icon img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+  filter: grayscale(1) brightness(3);
+}
+
+/* ── Card title ─────────────────────────────────────────────────────────── */
+.vision2030__card-title {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  line-height: 1.4;
+  transition: color 0.5s ease;
+}
+
+/* ── Card description ───────────────────────────────────────────────────── */
+.vision2030__card-desc {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.22);
+  margin: 0;
+  transition: color 0.5s ease;
+}
+
+/* ── CTA button (Hamza Advanced design system — ghost outline pill) ──── */
+.vision2030__cta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill, 999px);
+  padding: 10px 24px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.vision2030__cta:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   HOVER STATE: Vision card hovered (idx=1, right card)
+   → Video plays, right card gets lilac/light tint, left card dims
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* The vision card when hovered */
+.vision2030__card--vision.is-hovered {
+  background: rgba(180, 170, 210, 0.12);
+  border-top: 2px solid rgba(180, 170, 210, 0.25);
+}
+
+.vision2030__card--vision.is-hovered .vision2030__card-icon {
+  background: rgba(180, 170, 210, 0.1);
+  border-color: rgba(180, 170, 210, 0.2);
+}
+
+.vision2030__card--vision.is-hovered .vision2030__card-icon img {
+  opacity: 0.7;
+  filter: grayscale(0) brightness(1);
+}
+
+.vision2030__card--vision.is-hovered .vision2030__card-title {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.vision2030__card--vision.is-hovered .vision2030__card-desc {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.vision2030__card--vision.is-hovered .vision2030__cta {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Dim the commitment card when vision is hovered */
+.hover-vision .vision2030__card--hamza {
+  background: rgba(11, 18, 32, 0.8);
+}
+
+.hover-vision .vision2030__card--hamza .vision2030__card-title {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.hover-vision .vision2030__card--hamza .vision2030__card-desc {
+  color: rgba(255, 255, 255, 0.12);
+}
+
+.hover-vision .vision2030__card--hamza .vision2030__cta {
+  border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   HOVER STATE: Commitment card hovered (idx=0, left card)
+   → Dark cityscape stays, left card gets green accent, right card dims
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* The commitment card when hovered */
+.vision2030__card--hamza.is-hovered {
+  background: rgba(19, 189, 132, 0.08);
+  border-top: 2px solid var(--emerald, #13BD84);
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__card-glow {
+  background: linear-gradient(90deg, var(--emerald, #13BD84), rgba(19, 189, 132, 0));
+  box-shadow: 0 0 30px rgba(19, 189, 132, 0.4), 0 0 60px rgba(19, 189, 132, 0.15);
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__card-icon {
+  background: rgba(19, 189, 132, 0.12);
+  border-color: rgba(19, 189, 132, 0.25);
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__card-icon img {
+  opacity: 0.85;
+  filter: grayscale(0) brightness(1) hue-rotate(0deg);
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__card-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__card-desc {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__cta {
+  background: var(--emerald, #13BD84);
+  border-color: var(--emerald, #13BD84);
+  color: #ffffff;
+}
+
+.vision2030__card--hamza.is-hovered .vision2030__cta:hover {
+  background: var(--emerald-soft, #2BD89A);
+  border-color: var(--emerald-soft, #2BD89A);
+  box-shadow: 0 0 24px rgba(19, 189, 132, 0.3);
+}
+
+/* Dim the vision card when commitment is hovered */
+.hover-commitment .vision2030__card--vision {
+  background: rgba(11, 18, 32, 0.7);
+}
+
+.hover-commitment .vision2030__card--vision .vision2030__card-title {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.hover-commitment .vision2030__card--vision .vision2030__card-desc {
+  color: rgba(255, 255, 255, 0.12);
+}
+
+.hover-commitment .vision2030__card--vision .vision2030__cta {
+  border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .vision2030__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .vision2030__card--vision {
+    border-right: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .vision2030__graphic {
+    display: none !important; /* Completely canceled in responsive */
+  }
+}
+
+@media (max-width: 768px) {
+  .vision2030__backdrop {
+    min-height: 320px;
+  }
+
+  .vision2030__header {
+    padding: clamp(3rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+  }
+
+  .vision2030__card {
+    padding: 28px 24px;
+    gap: 12px;
+  }
+
+  .vision2030__card-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .vision2030__card-icon img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .vision2030__heading-line2 {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .vision2030__graphic {
+    display: none !important; /* Completely canceled in responsive */
+  }
+}
+
+@media (max-width: 480px) {
+  .vision2030__backdrop {
+    min-height: 240px;
+  }
+
+  .vision2030__cards {
+    grid-template-columns: 1fr 1fr !important; /* Force row display */
+  }
+
+  .vision2030__card {
+    padding: 16px 12px !important;
+    gap: 8px !important;
+    min-height: 180px; /* Decrease card height */
+  }
+
+  .vision2030__card-title {
+    font-size: 0.85rem !important; /* Downscale card title text */
+  }
+
+  .vision2030__card-desc {
+    font-size: 0.72rem !important; /* Downscale description text */
+    line-height: 1.4 !important;
+  }
+
+  .vision2030__cta {
+    padding: 6px 12px !important;
+    font-size: 0.68rem !important; /* Downscale CTA text */
+    margin-top: 4px !important;
+  }
+
+  .vision2030__card-icon {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .vision2030__card-icon img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}

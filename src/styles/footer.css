@@ -1,0 +1,258 @@
+/* =============================================================================
+   FOOTER SECTION
+   ========================================================================== */
+
+.footer {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--ink) 0%,
+    var(--ink-800) 50%,
+    var(--ink) 100%
+  );
+  background-size: 400% 400%;
+  animation: bgMove 15s ease infinite;
+  color: var(--cream);
+  padding: 80px 0 32px;
+  overflow: hidden;
+  border-top: 1px solid rgba(247, 240, 245, 0.1);
+}
+
+@keyframes bgMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ── Graphic ── */
+.footer__graphic {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: clamp(325px, 40vw, 325px);
+  opacity: 0.1;
+  filter: saturate(0);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Inner Layout ── */
+.footer__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 5rem;
+  margin-bottom: 64px;
+}
+
+/* ── Column 1: Brand ── */
+.footer__col--brand {
+  align-items: flex-start;
+  /* in RTL, flex-start is right */
+}
+
+.footer__logo-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: all 0.4s ease;
+}
+
+.footer__logo-link:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.footer__desc {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(247, 240, 245, 0.25);
+  /* 25% opacity white */
+  margin: 0 0 32px 0;
+}
+
+/* Socials */
+.footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(247, 240, 245, 0.25);
+  /* 25% opacity white */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer__social-link:hover {
+  color: rgba(247, 240, 245, 0.75);
+  /* 75% opacity white */
+  transform: translateY(-2px);
+}
+
+/* ── Columns 2, 3, 4: Nav Links ── */
+.footer__col-title {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--emerald);
+  /* Accent Green */
+  margin: 0 0 24px 0;
+}
+
+.footer__nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer__link {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: rgba(247, 240, 245, 0.25);
+  /* 25% opacity white */
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.footer__link:hover {
+  color: rgba(247, 240, 245, 0.75);
+  /* 75% opacity white */
+}
+
+/* Sector Hover Colors */
+.footer__link--sector {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer__link--sector:hover {
+  color: var(--hover-color, rgba(247, 240, 245, 0.75));
+  transform: translateX(-4px);
+  /* Slight nudge in RTL */
+}
+
+/* Sector Badge "حديث" */
+.footer__badge {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.65rem;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: rgba(247, 240, 245, 0.05);
+  /* Dimmed white initially */
+  color: rgba(247, 240, 245, 0.3);
+  /* Dimmed white initially */
+  font-weight: 700;
+  margin-right: 12px;
+  /* Space between badge and text in RTL */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.footer__link--sector:hover .footer__badge {
+  background: color-mix(in srgb, var(--badge-color) 10%, transparent);
+  color: var(--badge-color);
+}
+
+/* External Link Arrow */
+.footer__link--external svg {
+  margin-right: 6px;
+  /* RTL spacing */
+  color: inherit;
+  transition: transform 0.3s ease;
+}
+
+.footer__link--external:hover svg {
+  transform: translate(-3px, -3px);
+  /* Move top-left */
+}
+
+/* ── Bottom Bar ── */
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid rgba(247, 240, 245, 0.08);
+  /* Faint white line */
+}
+
+.footer__copyright {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: rgba(247, 240, 245, 0.25);
+  margin: 0;
+}
+
+.footer__bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer__col {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .footer__col--brand {
+    align-items: center !important;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .footer__graphic {
+    rotate: -25deg;
+    position: absolute;
+    left: -25px;
+    bottom: 200px;
+    top: auto;
+    width: 400px;
+    max-width: none;
+    transform: none;
+    opacity: 0.05;
+    /* Reduce opacity on mobile so it doesn't block text */
+    filter: saturate(0);
+  }
+}

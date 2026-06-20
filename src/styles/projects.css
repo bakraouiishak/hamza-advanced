@@ -1,0 +1,858 @@
+/* =============================================================================
+   PROJECTS — Enterprise-wide interactive Saudi-Arabia map (main brand)
+   Map skeleton cloned from EvProjects; chrome (overlay menu, count pins,
+   custom zoom, title block, vignette) modelled after Vision2030's map.
+   ========================================================================== */
+
+.projects-section {
+  position: relative;
+  width: 100%;
+  background: var(--ink);
+  padding: 0;
+  overflow: hidden;
+}
+
+.projects-stage {
+  position: relative;
+  width: 100%;
+  height: clamp(640px, 92vh, 880px);
+  isolation: isolate;
+  background: var(--ink);
+}
+
+.projects-map {
+  position: absolute !important;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.projects-map.leaflet-container {
+  background: var(--ink);
+  outline: none;
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+}
+
+/* ── Vignette / inner shadow over the map ───────────────────────────────── */
+/* Strong #0B1220 fades at top + bottom make the section bleed seamlessly into
+   the dark surfaces above (Vision2030) and below (SloganSectors). The
+   radial overlay keeps depth toward the corners. */
+.projects-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 380;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 90px 90px -40px #0B1220,
+    inset 0 -90px 90px -40px #0B1220,
+    inset 0 0 220px 60px rgba(11, 18, 32, 0.85);
+  
+    background:
+    linear-gradient(180deg,
+      #0B1220 0%,
+      rgba(11, 18, 32, 0.85) 6%,
+      transparent 18%,
+      transparent 82%,
+      rgba(11, 18, 32, 0.85) 94%,
+      #0B1220 100%),
+    radial-gradient(ellipse at center, transparent 50%, rgba(11, 18, 32, 0.75) 100%);
+}
+
+/* ── Province name labels (KSA only) ────────────────────────────────────── */
+.proj-map__province {
+  background: transparent !important;
+  border: 0 !important;
+  pointer-events: none;
+}
+
+.proj-map__province-text {
+  display: inline-block;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(247, 240, 245, 0.5);
+  text-align: center;
+  text-shadow:
+    0 1px 2px rgba(11, 18, 32, 0.95),
+    0 0 4px rgba(11, 18, 32, 0.85);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ── Count-diamond pin (Vision2030 style) ───────────────────────────────── */
+.proj-pin {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.proj-pin__wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proj-pin__diamond {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-deep));
+  border: 2px solid rgba(247, 240, 245, 0.92);
+  transform: rotate(45deg);
+  border-radius: 4px;
+  box-shadow:
+    0 8px 22px -6px rgba(19, 189, 132, 0.7),
+    0 0 0 1px rgba(11, 18, 32, 0.4);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.proj-pin__count {
+  position: relative;
+  z-index: 1;
+  color: var(--cream);
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-shadow: 0 1px 2px rgba(11, 18, 32, 0.4);
+  pointer-events: none;
+}
+
+.proj-pin__wrap.is-active {
+  transform: scale(1.1);
+}
+
+.proj-pin__wrap.is-active .proj-pin__diamond {
+  background: linear-gradient(135deg, var(--emerald-soft), var(--emerald));
+  box-shadow:
+    0 0 0 4px rgba(19, 189, 132, 0.22),
+    0 12px 28px -6px rgba(19, 189, 132, 0.8);
+}
+
+.proj-pin:hover .proj-pin__wrap {
+  transform: scale(1.08);
+}
+
+/* ── Leaflet tooltip ────────────────────────────────────────────────────── */
+.leaflet-tooltip.proj-map__tooltip {
+  background: rgba(11, 18, 32, 0.95);
+  color: var(--cream);
+  border: 1px solid rgba(19, 189, 132, 0.5);
+  border-radius: 10px;
+  padding: 0.45rem 0.85rem;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.6);
+}
+
+.leaflet-tooltip.proj-map__tooltip::before {
+  display: none;
+}
+
+/* ── Locations menu (absolute overlay) ──────────────────────────────────── */
+.projects-menu {
+  position: absolute;
+  z-index: 400;
+  top: 36px;
+  inset-inline-start: 36px;
+  width: 320px;
+  max-height: calc(100% - 72px);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(17, 26, 46, 0.78), rgba(11, 18, 32, 0.92));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-menu__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 12px 12px 0;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.projects-menu__tab {
+  flex: 1 1 auto;
+  background: transparent;
+  border: 0;
+  color: rgba(247, 240, 245, 0.55);
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 6px 10px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+  white-space: nowrap;
+}
+
+.projects-menu__tab:hover {
+  color: var(--cream);
+}
+
+.projects-menu__tab.is-active {
+  color: var(--emerald);
+  border-bottom-color: var(--emerald);
+}
+
+.projects-menu__list-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.projects-menu__list {
+  list-style: none;
+  padding: 10px 10px 16px;
+  margin: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(19, 189, 132, 0.4) transparent;
+}
+
+.projects-menu__list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.projects-menu__list::-webkit-scrollbar-thumb {
+  background: rgba(19, 189, 132, 0.4);
+  border-radius: 5px;
+}
+
+.projects-menu__row {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px 8px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(247, 240, 245, 0.05);
+  background: rgba(247, 240, 245, 0.02);
+  color: rgba(247, 240, 245, 0.85);
+  text-align: start;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.projects-menu__row:hover {
+  border-color: rgba(19, 189, 132, 0.4);
+  background: rgba(19, 189, 132, 0.06);
+  transform: translateX(-3px);
+}
+
+.projects-menu__row-thumb {
+  width: 58px;
+  height: 44px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  background: rgba(11, 18, 32, 0.6);
+}
+
+.projects-menu__row-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.projects-menu__row-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.projects-menu__row-dot {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.projects-menu__row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.projects-menu__row-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.projects-menu__row-meta {
+  font-size: 0.68rem;
+  color: rgba(247, 240, 245, 0.55);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Detail (project selected) */
+.projects-menu__detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px 18px;
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(19, 189, 132, 0.4) transparent;
+}
+
+.projects-menu__back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: rgba(247, 240, 245, 0.05);
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  color: rgba(247, 240, 245, 0.85);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.projects-menu__back svg {
+  transform: scaleX(-1);
+}
+
+.projects-menu__back:hover {
+  border-color: var(--emerald);
+  color: var(--emerald);
+  background: rgba(19, 189, 132, 0.08);
+}
+
+.projects-menu__cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+  background: rgba(11, 18, 32, 0.6);
+  isolation: isolate;
+}
+
+.projects-menu__cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  z-index: 0;
+}
+
+.projects-menu__cover-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.projects-menu__cover-chip {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+}
+
+.projects-menu__detail-title {
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cream);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.projects-menu__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+  border-block: 1px dashed rgba(247, 240, 245, 0.08);
+}
+
+.projects-menu__meta-row {
+  font-size: 0.76rem;
+  color: rgba(247, 240, 245, 0.75);
+  display: flex;
+  gap: 6px;
+  line-height: 1.6;
+}
+
+.projects-menu__meta-lbl {
+  color: var(--emerald);
+  font-weight: 700;
+  min-width: 48px;
+}
+
+.projects-menu__detail-body {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.72);
+}
+
+/* ── Bottom-end info block ──────────────────────────────────────────────── */
+.projects-info {
+  position: absolute;
+  z-index: 400;
+  bottom: 36px;
+  inset-inline-end: 36px;
+  max-width: 380px;
+  text-align: end;
+  pointer-events: none;
+  transition: inset-inline-end 0.4s ease, max-width 0.4s ease, bottom 0.4s ease;
+}
+
+/* When a city pin is active, the info block stretches to a full-width
+   horizontal scroller across the bottom of the stage. */
+.projects-info.is-cards {
+  bottom: 24px;
+  inset-inline-start: 24px;
+  inset-inline-end: 24px;
+  max-width: none;
+  text-align: start;
+  pointer-events: auto;
+}
+
+.projects-info__eyebrow {
+  display: inline-block;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--emerald);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.projects-info__title {
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.2;
+  color: var(--cream);
+  margin: 0 0 12px;
+  text-shadow: 0 4px 16px rgba(11, 18, 32, 0.7);
+}
+
+.projects-info__hl {
+  color: var(--emerald);
+  text-shadow: 0px 0px 20px var(--emerald);
+}
+
+.projects-info__desc {
+  margin: 0;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.72);
+}
+
+/* ── Horizontal card scroller (city pin active) ─────────────────────────── */
+.projects-info__cards-head {
+  margin-bottom: 12px;
+  padding-inline-start: 4px;
+}
+
+.projects-info__cards {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 4px 14px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(19, 189, 132, 0.45) transparent;
+  /* Match document flow direction; cards are read RTL anyway via parent */
+}
+
+.projects-info__cards::-webkit-scrollbar {
+  height: 6px;
+}
+
+.projects-info__cards::-webkit-scrollbar-thumb {
+  background: rgba(19, 189, 132, 0.45);
+  border-radius: 6px;
+}
+
+.projects-info__card {
+  flex: 0 0 220px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-radius: 14px;
+  background: rgba(11, 18, 32, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--cream);
+  font-family: inherit;
+  cursor: pointer;
+  scroll-snap-align: start;
+  overflow: hidden;
+  text-align: start;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.projects-info__card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(19, 189, 132, 0.4);
+  box-shadow: 0 16px 36px -16px rgba(19, 189, 132, 0.4);
+}
+
+.projects-info__card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: rgba(11, 18, 32, 0.6);
+  isolation: isolate;
+}
+
+.projects-info__card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  z-index: 0;
+}
+
+.projects-info__card-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.projects-info__card-chip {
+  position: absolute;
+  z-index: 2;
+  bottom: 8px;
+  inset-inline-start: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.projects-info__card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0 12px 12px;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--cream);
+}
+
+/* ── In-info event detail (after a card is clicked) ─────────────────────── */
+.projects-info__detail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  background: rgba(11, 18, 32, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.65);
+}
+
+.projects-info__back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 9px;
+  border-radius: 999px;
+  background: rgba(247, 240, 245, 0.05);
+  border: 1px solid rgba(247, 240, 245, 0.1);
+  color: rgba(247, 240, 245, 0.85);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.projects-info__back svg {
+  transform: scaleX(-1);
+}
+
+.projects-info__back:hover {
+  border-color: var(--emerald);
+  color: var(--emerald);
+  background: rgba(19, 189, 132, 0.08);
+}
+
+.projects-info__detail-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.projects-info__detail-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  background: rgba(11, 18, 32, 0.6);
+  isolation: isolate;
+}
+
+.projects-info__detail-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  z-index: 0;
+}
+
+.projects-info__detail-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.projects-info__detail-chip {
+  position: absolute;
+  z-index: 2;
+  bottom: 8px;
+  inset-inline-start: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.projects-info__detail-body-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.projects-info__detail-title {
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cream);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.projects-info__detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+  border-block: 1px dashed rgba(247, 240, 245, 0.08);
+}
+
+.projects-info__detail-meta-row {
+  display: flex;
+  gap: 6px;
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: rgba(247, 240, 245, 0.72);
+}
+
+.projects-info__detail-meta-lbl {
+  color: var(--emerald);
+  font-weight: 700;
+  min-width: 44px;
+}
+
+.projects-info__detail-body {
+  margin: 0;
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: rgba(247, 240, 245, 0.75);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Custom +/− zoom controls ───────────────────────────────────────────── */
+.proj-zoom {
+  position: absolute;
+  z-index: 410;
+  bottom: 36px;
+  inset-inline-start: 36px;
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.proj-zoom__btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(11, 18, 32, 0.65);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(19, 189, 132, 0.6);
+  color: var(--emerald);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.proj-zoom__btn:hover {
+  background: var(--emerald);
+  color: var(--ink);
+  border-color: var(--emerald);
+  box-shadow: 0 0 20px -4px rgba(19, 189, 132, 0.7);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 980px) {
+  .projects-stage {
+    height: clamp(480px, 70vh, 620px);
+  }
+
+  /* Cancel the locations menu on mobile */
+  .projects-menu {
+    display: none;
+  }
+
+  .projects-info {
+    bottom: 16px;
+    inset-inline-end: 16px;
+    inset-inline-start: 16px;
+    max-width: none;
+    text-align: end;
+  }
+
+  .projects-info__title {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .projects-info__desc {
+    font-size: 0.8rem;
+  }
+
+  /* Compact cards on mobile */
+  .projects-info__card {
+    flex: 0 0 170px;
+    width: 170px;
+  }
+
+  .projects-info__card-title {
+    font-size: 0.78rem;
+    padding: 0 10px 10px;
+  }
+
+  /* Stack the detail panel on mobile */
+  .projects-info__detail-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .projects-info__detail-cover {
+    aspect-ratio: 16 / 9;
+  }
+
+  .projects-info__detail-body {
+    -webkit-line-clamp: 3;
+  }
+
+  .proj-zoom {
+    bottom: 24px;
+    inset-inline-start: 20px;
+  }
+
+  .proj-zoom__btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Smaller pins on mobile */
+  .proj-pin__wrap {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 560px) {
+  .projects-stage {
+    height: clamp(420px, 65vh, 540px);
+  }
+
+  .projects-vignette {
+    box-shadow: inset 0 0 140px 30px rgba(11, 18, 32, 0.85);
+  }
+}

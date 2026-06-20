@@ -1,0 +1,251 @@
+/* =============================================================================
+   HAMZA ADVANCED — MARKETPLACE SIGN-UP PAGE
+   Loads alongside advertising-marketplace-signin.css and reuses every
+   .si-* primitive (eyebrow, heading, fields, submit, divider, bottom link).
+   Adds only what's specific to sign-up:
+     • .su-page         — split-grid wrapper with graphic on the visual RIGHT
+     • .su-row--2       — two-up field row for first/last name and phone/address
+     • .su-graphic      — solid-yellow panel with two rotating blurred wheels
+                          and a centered two-line VIP Hakm Bold headline
+   ========================================================================== */
+
+/* ---------- 1. PAGE SPLIT (mirrored vs sign-in) ---------------------------
+ * In RTL, the first DOM child of a grid sits on the visual RIGHT, so the
+ * sign-up page places the GRAPHIC first and the FORM second. Result:
+ * graphic → visual right, form → visual left.
+ *
+ * Sizing: page is locked to exactly the viewport height (100vh, not
+ * min-height) so the form never causes the whole page to scroll. If the
+ * form happens to exceed the viewport on very small / heavily-zoomed
+ * displays, only the form panel scrolls internally — the graphic panel
+ * stays anchored. The "تسجيل الدخول" link at the bottom of the form is
+ * always reachable without scrolling on a standard laptop viewport
+ * (≥720 px tall) thanks to the tightened spacing rules further below.
+ */
+.su-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 100vh;
+  height: 100dvh;
+  /* better on iOS Safari where 100vh includes URL bar */
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .su-page {
+    /* form column gets a touch more breathing room than the graphic */
+    grid-template-columns: 1fr 1.1fr;
+  }
+}
+
+@media (min-width: 1440px) {
+  .su-page {
+    grid-template-columns: 1fr 1.15fr;
+  }
+}
+
+/* On mobile the graphic panel hides — same behaviour as sign-in. */
+.su-panel--graphic {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+@media (min-width: 1024px) {
+  .su-panel--graphic {
+    display: block;
+  }
+}
+
+/* Form panel — strict full-viewport height. Internal overflow:auto is the
+   safety net for extreme zoom levels (200%+) where no layout-tightening
+   can make the form fit. Scrollbar is hidden on Firefox/Webkit by tail
+   rules below. */
+.su-page .si-panel--form {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  /* override the sign-in's min-height: 100vh */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(254, 252, 79, 0.30) transparent;
+  padding-block: clamp(0.85rem, 2vh, 2rem);
+}
+
+.su-page .si-panel__content {
+  padding-block: clamp(0.5rem, 1vh, 1.5rem);
+}
+
+/* ---------- 1b. FORM SPACING — compressed to fit one viewport -------------
+ * The sign-in form has 2 fields; ours has 7 + a checkbox + a submit + a
+ * divider + a bottom link. To keep everything visible without scrolling
+ * we override the .si-form primitives with viewport-relative margins so
+ * the spacing breathes on tall screens and tightens on short ones.
+ */
+.su-page .si-form {
+  gap: 0;
+  max-width: 460px;
+}
+
+.su-page .si-form__eyebrow {
+  margin-bottom: 0.4rem;
+}
+
+.su-page .si-form__heading {
+  font-size: clamp(1.3rem, 2.8vw, 1.85rem);
+  margin-bottom: 0.35rem;
+}
+
+.su-page .si-form__desc {
+  font-size: 0.85rem;
+  margin-bottom: clamp(0.85rem, 1.6vh, 1.5rem);
+}
+
+.su-page .si-field {
+  margin-bottom: clamp(0.55rem, 1vh, 0.95rem);
+}
+
+.su-page .si-field__label {
+  margin-bottom: 0.32rem;
+  font-size: 0.78rem;
+}
+
+.su-page .si-field__input {
+  padding-block: 0.65rem;
+  font-size: 0.86rem;
+}
+
+.su-page .si-form__options {
+  margin-block: clamp(0.6rem, 1vh, 1.1rem) clamp(0.85rem, 1.5vh, 1.4rem);
+}
+
+.su-page .si-form__submit {
+  padding-block: clamp(0.65rem, 1.2vh, 0.9rem);
+  font-size: 0.92rem;
+}
+
+.su-page .si-form__divider {
+  margin: clamp(0.85rem, 1.4vh, 1.4rem) 0 clamp(0.6rem, 1vh, 1rem);
+}
+
+/* Cosmetic: hide the form panel's scrollbar on WebKit so the safety-net
+   scroll doesn't visually fight the layout when it isn't needed. */
+.su-page .si-panel--form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.su-page .si-panel--form::-webkit-scrollbar-thumb {
+  background: rgba(254, 252, 79, 0.30);
+  border-radius: 999px;
+}
+
+/* ---------- 2. TWO-UP FIELD ROW ------------------------------------------- */
+/* Used for first/last name and phone/address — collapses to single column on
+   narrow viewports so labels stay legible. */
+.su-row--2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 1rem;
+}
+
+@media (min-width: 560px) {
+  .su-row--2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- 3. YELLOW GRAPHIC PANEL --------------------------------------- */
+.su-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background: var(--ad-yellow);
+  /* #FEFC4F — accent yellow */
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Both wheels: same SVG, different size + position. Blurred by 20px and
+   spinning continuously on a 4s ease-in-out loop. */
+.su-graphic__wheel {
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+  /* Center-of-rotation is the SVG's own center, which is what we want. */
+  animation: su-spin 10s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Bottom-right — the dominant, larger wheel. We offset it past the panel's
+   edge so only a quarter or so peeks back into view; the blur smears it
+   into a soft glow. */
+.su-graphic__wheel--br {
+  width: clamp(400px, 65%, 720px);
+  aspect-ratio: 1 / 1;
+  bottom: -31%;
+  inset-inline-end: -31%;
+  filter: blur(20px);
+  opacity: 0.5;
+}
+
+/* Top-left — smaller, secondary wheel. */
+.su-graphic__wheel--tl {
+  width: clamp(220px, 32%, 340px);
+  aspect-ratio: 1 / 1;
+  top: -15%;
+  inset-inline-start: -15%;
+  filter: blur(15px);
+  opacity: 0.75;
+  /* Stagger the start so the two wheels don't pulse in lockstep. */
+  animation-delay: -2s;
+}
+
+@keyframes su-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect user motion preferences — wheels stand still. */
+@media (prefers-reduced-motion: reduce) {
+  .su-graphic__wheel {
+    animation: none;
+  }
+}
+
+/* ---------- 4. CENTERED HEADLINE ----------------------------------------- */
+/* Two lines, equal weight, VIP Hakm Bold, sitting dead-center above the
+   wheels (z-index lifts them above the blurred SVGs). */
+.su-graphic__text {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25em;
+  padding-inline: 2rem;
+  pointer-events: none;
+}
+
+.su-graphic__text-line {
+  font-family: 'VIP Hakm';
+  font-weight: 700;
+  /* VIP Hakm Bold */
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ad-ink);
+  /* dark text reads cleanly on yellow */
+  /* Subtle shadow keeps the text crisp even where blurred wheels overlap. */
+  text-shadow: 0 2px 0 rgba(254, 252, 79, 0.45);
+}

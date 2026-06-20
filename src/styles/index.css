@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RTL fixes — Bootstrap defaults to LTR; ensure utilities behave correctly. */
+html[dir='rtl'] body {
+    text-align: right;
+}
+
+/* Smooth-scroll on the document for nav anchors */
+html {
+    scroll-behavior: smooth;
+}

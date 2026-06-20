@@ -1,0 +1,604 @@
+/* =============================================================================
+   HERO SECTION — Matching the Figma reference image
+   Frame: 1728 × 780  •  Background: #111A2E → #0B1220
+   
+   VISUAL layout (left → right):
+     Left ~38%:        Portrait image (grayscale, fades into bg)
+     Center-right:     Text content (eyebrow → heading → body → CTAs)
+     Far right:        HamzaWheel SVG — half-cropped, centered vertically
+   ========================================================================== */
+
+/* ── Container ─────────────────────────────────────────────────────────────── */
+.hero-figma {
+  position: relative;
+  width: 100%;
+  min-height: 780px;
+  height: 100svh;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+/* ── Background gradient ───────────────────────────────────────────────────── */
+.hero-figma__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(160deg,
+      rgba(11, 18, 32, 0.25) 0%,
+      #0D1526 50%,
+      #0B1220 100%);
+}
+
+/* Subtle grain overlay for depth */
+.hero-figma__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 0);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+/* ── Per-sector media layer (image or video) ──────────────────────────────── */
+.hero-figma__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-figma__media img,
+.hero-figma__media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.5;
+  filter: grayscale(1);
+  display: block;
+}
+
+/* Dark gradient overlay — top #0B1220 @ 25% → bottom #0B1220 @ 100% */
+.hero-figma__media-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+      rgba(11, 18, 32, 0.25) 0%,
+      rgba(11, 18, 32, 0.8) 60%,
+      rgba(11, 18, 32, 1) 100%);
+}
+
+/* ── Portrait image (LEFT side) ────────────────────────────────────────────── */
+.hero-figma__portrait-wrap {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+  width: 43%;
+  max-width: 630px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  /* Grayscale + slight blue tint like the reference */
+  filter: grayscale(0.6) brightness(0.85);
+  /* Fade mask: right edge dissolves into background */
+  -webkit-mask-image: linear-gradient(to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 0.5) 65%,
+      rgba(0, 0, 0, 0) 92%);
+  mask-image: linear-gradient(to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 0.5) 65%,
+      rgba(0, 0, 0, 0) 92%);
+}
+
+.hero-figma__portrait {
+  width: auto;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: center bottom;
+  display: block;
+}
+
+/* ── HamzaWheel wrapper (RIGHT side, vertically centered, half-cropped) ──── */
+.hero-figma__wheel-wrap {
+  position: absolute;
+  right: -460px;
+  /* Center is roughly on the edge of the screen */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  /* Above hero content so wheel receives hover events */
+  width: 900px;
+  height: 700px;
+  pointer-events: auto;
+  /* Enable hover on the wheel */
+}
+
+/* ── Content block (CENTER-RIGHT) ──────────────────────────────────────────── */
+.hero-figma__content {
+  position: absolute;
+  top: 0;
+  right: 420px;
+  /* Offset from right edge to avoid wheel overlap */
+  left: auto;
+  z-index: 5;
+  width: 50%;
+  max-width: 520px;
+  height: 100%;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  padding-right: 2rem;
+  padding-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  text-align: right;
+  direction: rtl;
+  pointer-events: none;
+  /* Let events pass through to the wheel behind */
+}
+
+/* Re-enable pointer events on interactive children */
+.hero-figma__content * {
+  pointer-events: auto;
+}
+
+/* ── Eyebrow ───────────────────────────────────────────────────────────────── */
+.hero-figma__eyebrow {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(247, 240, 245, 0.30);
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+/* ── Main heading ──────────────────────────────────────────────────────────── */
+.hero-figma__heading {
+  margin: 0 0 28px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hero-figma__heading-line1 {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(3.5rem, 6.5vw, 5.8rem);
+  font-weight: 300;
+  line-height: 0.95;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  display: block;
+}
+
+.hero-figma__heading-line2 {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(4.5rem, 9vw, 8.5rem);
+  font-weight: 700;
+  line-height: 1.5;
+  color: #13BD84;
+  letter-spacing: -0.02em;
+  display: block;
+}
+
+/* ── Body paragraph ────────────────────────────────────────────────────────── */
+.hero-figma__body {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  width: 125%;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.75);
+  margin: 0 0 36px 0;
+  max-width: 480px;
+}
+
+/* ── CTA button row ────────────────────────────────────────────────────────── */
+.hero-figma__cta-row {
+  width: calc(100% + 2rem);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+/* Shared button base */
+.hero-figma__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 28px;
+  border-radius: 9999px;
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-figma__btn:hover {
+  transform: scale(1.05);
+}
+
+.hero-figma__btn:active {
+  transform: scale(0.98);
+}
+
+/* Primary Button — Filled with animated gradient, outlines on hover */
+.hero-figma__btn--ghost {
+  background: linear-gradient(135deg,
+      var(--accent-color, #13BD84) 0%,
+      var(--accent-color-soft, #2BD89A) 50%,
+      var(--accent-color-deep, #0E9968) 100%);
+  background-size: 200% auto;
+  color: var(--accent-contrast, #0b1220);
+  border: 2px solid transparent;
+  animation: primary-gradient-shift 8s ease infinite;
+}
+
+.hero-figma__btn--ghost:hover {
+  background: transparent;
+  border-color: var(--accent-color, #13BD84);
+  color: var(--accent-color, #13BD84);
+  box-shadow:
+    0 0 16px color-mix(in srgb, var(--accent-color-deep, #0E9968) 50%, transparent),
+    inset 0 0 16px color-mix(in srgb, var(--accent-color-deep, #0E9968) 50%, transparent);
+  text-shadow: 0 0 12px var(--accent-color, #13BD84);
+}
+
+/* Secondary Button — Outlined with cream white, fills on hover */
+.hero-figma__btn--primary {
+  background: transparent;
+  border: 2px solid var(--cream, #F7F0F5);
+  color: var(--cream, #F7F0F5);
+}
+
+.hero-figma__btn--primary:hover {
+  background: var(--cream, #F7F0F5);
+  color: #0b1220;
+  box-shadow: 0 0 15px rgba(247, 240, 245, 0.25);
+}
+
+@keyframes primary-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ── Reset Button in CTA Row ── */
+.hero-figma__reset-btn,
+.hero-figma__reset-btn:hover,
+.hero-figma__reset-btn:active {
+  aspect-ratio: 1 / 1 !important;
+  flex-shrink: 0 !important;
+  align-self: stretch !important;
+  height: auto !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  font-size: 1.25rem !important;
+  border-radius: 50% !important;
+  background: rgba(247, 240, 245, 0.06) !important;
+  border: 2px solid rgba(247, 240, 245, 0.25) !important;
+  color: rgba(247, 240, 245, 0.75) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 480px) {
+
+  .hero-figma__reset-btn,
+  .hero-figma__reset-btn:hover,
+  .hero-figma__reset-btn:active {
+    width: 48px !important;
+    height: 48px !important;
+    align-self: center !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+/* ==========================================================================
+   HAMZA WHEEL — Interactive SVG component
+   ========================================================================== */
+
+.hamza-wheel-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hamza-wheel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  animation: wheelIdleBump 4s cubic-bezier(0.25, 1, 0.36, 1) infinite;
+}
+
+.hamza-wheel-root:hover .hamza-wheel-svg {
+  animation-play-state: paused;
+}
+
+@keyframes wheelIdleBump {
+
+  0%,
+  75% {
+    transform: rotate(0deg);
+  }
+
+  82% {
+    transform: rotate(5deg);
+  }
+
+  85% {
+    transform: rotate(-5deg);
+  }
+
+  96%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* ── Wedge badge label ──────────────────────────────────────────────────────
+   Shield/pentagon-shaped badge that appears on hover over each wheel sector.
+   Positioned absolutely within .hamza-wheel-root, sitting on the visible
+   (cropped) portion of the hovered wedge.
+   Matches the reference images: rounded top, pointed bottom, semi-transparent
+   accent colour background, white text with icon below text. */
+
+.wheel-badge {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 20px rgba(var(--badge-accent-rgb, 19, 189, 132), 0.45));
+}
+
+.wheel-badge__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 16px 22px;
+  direction: rtl;
+  text-align: center;
+  /* Shield / pentagon shape with rounded top impression */
+  clip-path: polygon(8% 0%,
+      92% 0%,
+      100% 6%,
+      100% 72%,
+      50% 100%,
+      0% 72%,
+      0% 6%);
+  background: rgba(var(--badge-accent-rgb, 19, 189, 132), 0.80);
+  min-width: 110px;
+  min-height: 110px;
+}
+
+.wheel-badge__icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(10) saturate(0);
+  opacity: 0.95;
+  margin-top: 2px;
+}
+
+.wheel-badge__lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  line-height: 1.3;
+}
+
+.wheel-badge__line {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+
+@media (min-width: 1440px) {
+  .hero-figma__content {
+    padding-right: 6%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-figma {
+    min-height: 600px;
+  }
+
+  .hero-figma__content {
+    width: 56%;
+    max-width: 520px;
+    right: 160px;
+    padding-right: 3%;
+    padding-top: 120px;
+  }
+
+  .hero-figma__portrait-wrap {
+    width: 42%;
+    opacity: 0.7;
+  }
+
+  .hero-figma__wheel-wrap {
+    width: 420px;
+    height: 420px;
+    right: -210px;
+  }
+
+  .hero-figma__heading-line1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .hero-figma__heading-line2 {
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-figma {
+    min-height: 100svh;
+    max-height: none;
+  }
+
+  .hero-figma__portrait-wrap {
+    width: 100%;
+    max-width: none;
+    opacity: 0.2;
+    left: 0;
+    -webkit-mask-image: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0) 70%);
+    mask-image: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0) 70%);
+  }
+
+  .hero-figma__wheel-wrap {
+    width: 300px;
+    height: 300px;
+    right: -150px;
+    opacity: 0.4;
+  }
+
+  .hero-figma__content {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 120px 20px 60px;
+    text-align: center;
+    right: auto;
+    left: auto;
+  }
+
+  .hero-figma__eyebrow {
+    font-size: 0.875rem;
+    margin-bottom: 20px;
+  }
+
+  .hero-figma__heading {
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .hero-figma__heading-line1 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  .hero-figma__heading-line2 {
+    font-size: clamp(2.25rem, 9vw, 3.5rem);
+  }
+
+  .hero-figma__body {
+    font-size: 1rem;
+    margin-bottom: 32px;
+    line-height: 1.8;
+    max-width: 100%;
+  }
+
+  .hero-figma__cta-row {
+    justify-content: center;
+  }
+
+  .hero-figma__btn {
+    padding: 12px 28px;
+    font-size: 0.875rem;
+  }
+
+  .hero-figma__reset-pill {
+    align-self: center;
+  }
+
+  /* Hide wheel badges on mobile (touch hover not reliable) */
+  .wheel-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-figma__heading-line1 {
+    font-size: 1.75rem;
+  }
+
+  .hero-figma__heading-line2 {
+    font-size: 2.25rem;
+  }
+
+  .hero-figma__cta-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-figma__btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-figma__wheel-wrap {
+    position: absolute;
+    top: auto;
+    bottom: -150px;
+    /* Clips the bottom 40% (since diameter is 380px) */
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) rotate(90deg);
+    width: 380px;
+    height: 380px;
+    opacity: 1;
+    /* Fully visible on mobile */
+  }
+
+  .hamza-wheel-root {
+    transform: none !important;
+    /* Disable desktop translate offsets on mobile */
+  }
+
+  .hero-figma__content {
+    padding: 100px 16px 20px;
+  }
+
+  .hero-figma__body {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,2073 @@
+/* =============================================================================
+   HAMZA ADVANCED — ADVERTISING MARKETPLACE ADMIN DASHBOARD
+   Tokens inherited from .ad-scope (yellow accent + VIP Hakm + dark ink).
+   Pure tokens, no patterns / brand graphics — per the brief.
+   All primitives prefixed with .adm- to avoid collisions.
+   ========================================================================== */
+
+/* ---------- 1. SHELL ------------------------------------------------------ */
+.adm-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--ad-ink);
+}
+
+@media (min-width: 1024px) {
+  .adm-shell {
+    /* Sidebar on RTL start (right) — narrow. Main on RTL end (left) — wide. */
+    grid-template-columns: 260px 1fr;
+  }
+}
+
+.adm-main {
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  overflow-x: hidden;
+}
+
+/* ---------- 2. SIDEBAR ---------------------------------------------------- */
+.adm-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(17, 26, 46, 0.85), rgba(11, 18, 32, 1));
+  border-inline-start: 1px solid rgba(254, 252, 79, 0.10);
+  padding: 1.5rem 1rem;
+  gap: 1rem;
+}
+
+.adm-sidebar__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 18px;
+  /* multi-line — soft rounded */
+  transition: background 0.3s ease;
+}
+
+.adm-sidebar__brand:hover {
+  background: rgba(254, 252, 79, 0.04);
+}
+
+.adm-sidebar__brand img {
+  height: 36px;
+  width: auto;
+}
+
+.adm-sidebar__brand-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  color: var(--ad-yellow);
+  text-transform: uppercase;
+  padding-inline-start: 0.6rem;
+}
+
+.adm-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 1rem;
+  flex: 1;
+}
+
+.adm-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 999px;
+  /* pill */
+  color: rgba(247, 240, 245, 0.65);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.adm-sidebar__link:hover {
+  color: var(--ad-cream);
+  background: rgba(247, 240, 245, 0.04);
+}
+
+/* Active state: full yellow pill, navy ink for text + icon (icons inherit
+   via currentColor). The legacy ::before vertical bar is removed because
+   the solid fill already reads as "you are here". */
+.adm-sidebar__link.is-active {
+  color: var(--ad-ink);
+  background: var(--ad-yellow);
+  box-shadow: 0 0 22px -4px var(--ad-yellow-glow);
+  font-weight: 700;
+}
+
+.adm-sidebar__link.is-active::before {
+  display: none;
+}
+
+.adm-sidebar__link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-sidebar__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.adm-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.4rem;
+}
+
+.adm-sidebar__user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(254, 252, 79, 0.10);
+  color: var(--ad-yellow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.adm-sidebar__user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adm-sidebar__user-name {
+  color: var(--ad-cream);
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.adm-sidebar__user-role {
+  color: rgba(247, 240, 245, 0.45);
+  font-size: 0.74rem;
+}
+
+.adm-sidebar__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  color: rgba(247, 240, 245, 0.55);
+  border-radius: 999px;
+  /* pill */
+  font-weight: 600;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.adm-sidebar__logout:hover {
+  border-color: rgba(255, 122, 147, 0.40);
+  color: #FF7A93;
+}
+
+/* On mobile, sidebar becomes horizontal-ish and the foot collapses. */
+@media (max-width: 1023px) {
+  .adm-shell {
+    display: block;
+  }
+
+  .adm-sidebar {
+    position: relative;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0.85rem 1rem;
+    border-inline-start: none;
+    border-bottom: 1px solid rgba(254, 252, 79, 0.10);
+  }
+
+  .adm-sidebar__brand {
+    display: none;
+  }
+
+  .adm-sidebar__nav {
+    flex-direction: row;
+    flex: none;
+    margin-top: 0;
+  }
+
+  .adm-sidebar__foot {
+    display: none;
+  }
+}
+
+/* ---------- 3. PAGE HEADER ----------------------------------------------- */
+.adm-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.adm-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.adm-page-head__eyebrow {
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--ad-yellow);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.adm-page-head__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--ad-cream);
+  line-height: 1.2;
+  margin: 0 0 0.3rem;
+}
+
+.adm-page-head__sub {
+  font-size: 0.92rem;
+  color: rgba(247, 240, 245, 0.55);
+  margin: 0;
+}
+
+.adm-page-head__actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- 4. BUTTONS / INPUTS ------------------------------------------ */
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  /* full pill — brand identity */
+  border: 1.5px solid transparent;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.adm-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.adm-btn--sm {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.adm-btn--primary {
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  border-color: var(--ad-yellow);
+  box-shadow: 0 6px 18px -6px var(--ad-yellow-glow);
+}
+
+.adm-btn--primary:hover:not(:disabled) {
+  background: transparent;
+  color: var(--ad-yellow);
+  box-shadow: 0 0 24px 2px var(--ad-yellow-glow), inset 0 0 12px rgba(254, 252, 79, 0.18);
+}
+
+.adm-btn--ghost {
+  background: transparent;
+  color: rgba(247, 240, 245, 0.75);
+  border-color: rgba(247, 240, 245, 0.18);
+}
+
+.adm-btn--ghost:hover:not(:disabled) {
+  color: var(--ad-yellow);
+  border-color: rgba(254, 252, 79, 0.45);
+  background: rgba(254, 252, 79, 0.04);
+}
+
+.adm-btn--danger {
+  background: transparent;
+  color: #FF7A93;
+  border-color: rgba(255, 122, 147, 0.35);
+}
+
+.adm-btn--danger:hover:not(:disabled) {
+  background: rgba(255, 122, 147, 0.08);
+  border-color: #FF7A93;
+}
+
+.adm-input,
+.adm-input select,
+.adm-input input {
+  background: rgba(247, 240, 245, 0.04);
+  border: 1.5px solid rgba(247, 240, 245, 0.10);
+  border-radius: 12px;
+  padding: 0.6rem 0.85rem;
+  color: var(--ad-cream);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.adm-input:focus,
+.adm-input:focus-visible {
+  border-color: rgba(254, 252, 79, 0.45);
+  background: rgba(254, 252, 79, 0.03);
+  box-shadow: 0 0 0 4px rgba(254, 252, 79, 0.06);
+}
+
+.adm-input::placeholder {
+  color: rgba(247, 240, 245, 0.30);
+}
+
+.adm-input--search {
+  min-width: 220px;
+  flex: 1;
+}
+
+.adm-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+.adm-search-wrap .adm-input--search {
+  width: 100%;
+  padding-inline-end: 3.8rem;
+}
+.adm-search-kbd {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  pointer-events: none;
+}
+.adm-search-kbd kbd {
+  background: rgba(247, 240, 245, 0.12);
+  border: 1px solid rgba(247, 240, 245, 0.25);
+  border-bottom: 2px solid rgba(247, 240, 245, 0.45);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: rgba(247, 240, 245, 0.85);
+  font-family: system-ui, sans-serif;
+  line-height: 1;
+  display: inline-block;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+.adm-search-kbd span {
+  font-size: 0.75rem;
+  color: rgba(247, 240, 245, 0.4);
+}
+
+.adm-input--narrow {
+  width: 110px;
+}
+
+.adm-viewtoggle {
+  display: inline-flex;
+  background: rgba(247, 240, 245, 0.04);
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  border-radius: 999px;
+  /* outer pill */
+  overflow: hidden;
+  padding: 2px;
+  gap: 2px;
+}
+
+.adm-viewtoggle__btn {
+  background: transparent;
+  border: 0;
+  color: rgba(247, 240, 245, 0.55);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  /* perfect circle */
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.adm-viewtoggle__btn:hover {
+  color: var(--ad-cream);
+}
+
+.adm-viewtoggle__btn.is-active {
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+}
+
+/* ---------- 5. FILTERS ROW ----------------------------------------------- */
+.adm-filters {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.85rem;
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 14px;
+}
+
+/* ---------- 6. EMPTY / ERROR / LOADING ----------------------------------- */
+.adm-empty {
+  border: 2px dashed rgba(254, 252, 79, 0.30);
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: rgba(254, 252, 79, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.adm-empty__icon {
+  color: rgba(254, 252, 79, 0.55);
+  display: inline-flex;
+}
+
+.adm-empty__msg {
+  font-weight: 700;
+  font-size: 1rem;
+  color: rgba(247, 240, 245, 0.72);
+  margin: 0;
+}
+
+.adm-empty__hint {
+  font-size: 0.85rem;
+  color: rgba(247, 240, 245, 0.45);
+  margin: 0;
+}
+
+.adm-error {
+  background: rgba(255, 122, 147, 0.08);
+  border: 1px solid rgba(255, 122, 147, 0.30);
+  color: #FF7A93;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+@keyframes adm-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.adm-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adm-skeleton__bar,
+.adm-skeleton__card {
+  background: linear-gradient(90deg,
+      rgba(247, 240, 245, 0.04) 0%,
+      rgba(247, 240, 245, 0.10) 50%,
+      rgba(247, 240, 245, 0.04) 100%);
+  background-size: 200% 100%;
+  animation: adm-shimmer 1.8s linear infinite;
+  border-radius: 10px;
+}
+
+.adm-skeleton__bar--lg {
+  height: 22px;
+  width: 40%;
+}
+
+.adm-skeleton__bar--md {
+  height: 14px;
+  width: 70%;
+}
+
+.adm-skeleton__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.adm-skeleton__card {
+  height: 160px;
+}
+
+/* ---------- 7. STAT CARDS (KPI) ------------------------------------------ */
+.adm-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .adm-kpis {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.adm-stat {
+  background: linear-gradient(160deg, rgba(254, 252, 79, 0.05) 0%, rgba(17, 26, 46, 0.55) 50%);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-top: 1px solid rgba(254, 252, 79, 0.22);
+  border-radius: 16px;
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: all 0.35s ease;
+}
+
+.adm-stat:hover {
+  border-color: rgba(254, 252, 79, 0.40);
+  transform: translateY(-2px);
+}
+
+.adm-stat__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adm-stat__label {
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.6);
+}
+
+.adm-stat__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  /* circle */
+  background: rgba(254, 252, 79, 0.08);
+  color: var(--ad-yellow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-stat__value {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.85rem;
+  color: var(--ad-yellow);
+  line-height: 1.1;
+}
+
+.adm-stat--amber .adm-stat__value {
+  color: #FEFC4F;
+}
+
+.adm-stat__hint {
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.40);
+}
+
+/* ---------- 8. CHARTS ---------------------------------------------------- */
+.adm-grid--2 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .adm-grid--2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.adm-chart {
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.adm-chart__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.adm-chart__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ad-cream);
+  margin: 0;
+}
+
+.adm-chart__sub {
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.45);
+  margin: 0;
+}
+
+.adm-chart__body {
+  position: relative;
+}
+
+.adm-chart__body--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-chart__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.adm-chart__center-num {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--ad-yellow);
+  line-height: 1;
+}
+
+.adm-chart__center-lbl {
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.55);
+}
+
+.adm-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.84rem;
+}
+
+.adm-chart__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(247, 240, 245, 0.65);
+}
+
+.adm-chart__legend strong {
+  color: var(--ad-cream);
+}
+
+.adm-chart__legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ---------- 9. RECENT ACTIVITY ------------------------------------------- */
+.adm-recent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .adm-recent {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.adm-recent__col {
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 16px;
+  padding: 1.1rem;
+}
+
+.adm-recent__list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.adm-recent__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed rgba(247, 240, 245, 0.06);
+}
+
+.adm-recent__row:last-child {
+  border-bottom: 0;
+}
+
+.adm-recent__row-main {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.adm-recent__row-title {
+  font-size: 0.88rem;
+  color: var(--ad-cream);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-recent__row-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  color: rgba(247, 240, 245, 0.65);
+  white-space: nowrap;
+}
+
+.adm-recent__row-time {
+  font-size: 0.72rem;
+  color: rgba(247, 240, 245, 0.40);
+}
+
+.adm-recent__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(254, 252, 79, 0.10);
+  color: var(--ad-yellow);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.adm-recent__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- 10. BADGES (status pills) ------------------------------------ */
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(247, 240, 245, 0.08);
+  color: rgba(247, 240, 245, 0.75);
+  border: 1px solid rgba(247, 240, 245, 0.12);
+}
+
+.adm-badge--yellow {
+  background: rgba(254, 252, 79, 0.10);
+  color: #FEFC4F;
+  border-color: rgba(254, 252, 79, 0.30);
+}
+
+.adm-badge--cyan {
+  background: rgba(91, 216, 232, 0.10);
+  color: #5BD8E8;
+  border-color: rgba(91, 216, 232, 0.30);
+}
+
+.adm-badge--green {
+  background: rgba(19, 189, 132, 0.10);
+  color: #13BD84;
+  border-color: rgba(19, 189, 132, 0.30);
+}
+
+.adm-badge--rose {
+  background: rgba(255, 122, 147, 0.10);
+  color: #FF7A93;
+  border-color: rgba(255, 122, 147, 0.30);
+}
+
+.adm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.adm-status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* ---------- 11. TABLES --------------------------------------------------- */
+.adm-table-wrap {
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 14px;
+  overflow: auto;
+  max-width: 100%;
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: start;
+  font-size: 0.88rem;
+}
+
+.adm-table thead th {
+  text-align: start;
+  font-weight: 700;
+  font-size: 0.76rem;
+  color: rgba(247, 240, 245, 0.50);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+  background: rgba(11, 18, 32, 0.45);
+  position: sticky;
+  top: 0;
+}
+
+.adm-table tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.04);
+  color: rgba(247, 240, 245, 0.85);
+}
+
+.adm-table__row {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.adm-table__row:hover {
+  background: rgba(254, 252, 79, 0.04);
+}
+
+.adm-table__user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.adm-table__avatar,
+.adm-table__thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(254, 252, 79, 0.08);
+  color: var(--ad-yellow);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.adm-table__thumb {
+  border-radius: 8px;
+}
+
+.adm-table__avatar img,
+.adm-table__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adm-table--compact td,
+.adm-table--compact th {
+  padding: 0.55rem 0.7rem;
+}
+
+/* ---------- 12. DETAIL VIEW (customer / generic) -------------------------- */
+.adm-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.adm-detail__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.adm-detail__close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  /* circle */
+  background: rgba(247, 240, 245, 0.04);
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  color: rgba(247, 240, 245, 0.75);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-detail__close:hover {
+  color: var(--ad-yellow);
+  border-color: rgba(254, 252, 79, 0.30);
+}
+
+.adm-detail__eyebrow {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--ad-yellow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 0.25rem;
+}
+
+.adm-detail__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--ad-cream);
+  margin: 0;
+}
+
+.adm-detail__actions {
+  margin-inline-start: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.adm-card {
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+}
+
+.adm-card__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ad-cream);
+  margin: 0 0 0.6rem;
+}
+
+.adm-card__sub {
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.50);
+  margin: 0 0 0.5rem;
+}
+
+.adm-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.adm-customer-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.adm-customer-card__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba(254, 252, 79, 0.10);
+  color: var(--ad-yellow);
+  font-weight: 700;
+  font-size: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.adm-customer-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adm-customer-card__body h3 {
+  color: var(--ad-cream);
+  font-size: 1.1rem;
+  margin: 0 0 0.2rem;
+}
+
+.adm-customer-card__body p {
+  font-size: 0.85rem;
+  color: rgba(247, 240, 245, 0.55);
+  margin: 0 0 0.4rem;
+}
+
+.adm-customer-card__time {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.40);
+}
+
+.adm-kv {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .adm-kv {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.adm-kv>div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed rgba(247, 240, 245, 0.06);
+}
+
+.adm-kv dt {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.adm-kv dd {
+  color: var(--ad-cream);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.adm-customer-orders {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.adm-customer-orders li {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed rgba(247, 240, 245, 0.06);
+  font-size: 0.86rem;
+  color: rgba(247, 240, 245, 0.78);
+}
+
+.adm-customer-orders__time {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.45);
+}
+
+/* ---------- 13. FORMS ---------------------------------------------------- */
+.adm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.adm-form__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.95rem;
+}
+
+@media (min-width: 560px) {
+  .adm-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.adm-form__error {
+  background: rgba(255, 122, 147, 0.08);
+  border: 1px solid rgba(255, 122, 147, 0.30);
+  color: #FF7A93;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.86rem;
+}
+
+.adm-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.adm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.adm-field>span {
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.72);
+  font-weight: 600;
+}
+
+.adm-field input,
+.adm-field select,
+.adm-field textarea {
+  background: rgba(247, 240, 245, 0.04);
+  border: 1.5px solid rgba(247, 240, 245, 0.10);
+  border-radius: 12px;
+  padding: 0.6rem 0.85rem;
+  color: var(--ad-cream);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.adm-field input:focus,
+.adm-field select:focus,
+.adm-field textarea:focus {
+  border-color: rgba(254, 252, 79, 0.45);
+  background: rgba(254, 252, 79, 0.03);
+  box-shadow: 0 0 0 4px rgba(254, 252, 79, 0.06);
+}
+
+.adm-field input[type="file"] {
+  padding: 0.5rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.adm-field__hint {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.45);
+  margin-top: 0.2rem;
+}
+
+.adm-field__hint a {
+  color: var(--ad-yellow);
+  text-decoration: underline;
+}
+
+.adm-field__hint code {
+  background: rgba(254, 252, 79, 0.08);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+/* ---------- 14. MODAL ---------------------------------------------------- */
+.adm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.adm-modal__panel {
+  background: var(--ad-ink);
+  border: 1px solid rgba(254, 252, 79, 0.20);
+  border-radius: 18px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+}
+
+.adm-modal__panel--md {
+  max-width: 520px;
+}
+
+.adm-modal__panel--lg {
+  max-width: 720px;
+}
+
+.adm-modal__panel--xl {
+  max-width: 980px;
+}
+
+.adm-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.adm-modal__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ad-cream);
+  margin: 0;
+}
+
+.adm-modal__close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  /* circle */
+  background: rgba(247, 240, 245, 0.04);
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  color: rgba(247, 240, 245, 0.75);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-modal__close:hover {
+  color: var(--ad-yellow);
+  border-color: rgba(254, 252, 79, 0.30);
+}
+
+.adm-modal__body {
+  padding: 1.25rem;
+}
+
+/* ---------- 15. PRODUCTS GRID -------------------------------------------- */
+.adm-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.adm-product-card {
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-product-card:hover {
+  border-color: rgba(254, 252, 79, 0.30);
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+}
+
+.adm-product-card__media {
+  position: relative;
+  aspect-ratio: 1/1;
+  background: rgba(247, 240, 245, 0.04);
+  overflow: hidden;
+}
+
+.adm-product-card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.35s ease;
+}
+
+.adm-product-card__hover {
+  opacity: 0;
+}
+
+.adm-product-card:hover .adm-product-card__hover {
+  opacity: 1;
+}
+
+.adm-product-card__body {
+  padding: 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.adm-product-card__cat {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ad-yellow);
+  letter-spacing: 0.04em;
+}
+
+.adm-product-card__title {
+  font-size: 0.96rem;
+  color: var(--ad-cream);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.35;
+  min-height: 2.4em;
+}
+
+.adm-product-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adm-product-card__price {
+  color: var(--ad-yellow);
+  font-weight: 700;
+}
+
+.adm-product-card__ref {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.45);
+}
+
+.adm-product-card__actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+/* ---------- 16. ORDERS GRID ---------------------------------------------- */
+.adm-orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.adm-order-card {
+  background: rgba(17, 26, 46, 0.55);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.adm-order-card:hover {
+  border-color: rgba(254, 252, 79, 0.30);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+}
+
+.adm-order-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.adm-order-card__name {
+  color: var(--ad-cream);
+  font-weight: 700;
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.adm-order-card__id {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.45);
+  margin: 0;
+}
+
+.adm-order-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.adm-order-card__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.65);
+}
+
+.adm-order-card__row strong {
+  color: var(--ad-cream);
+  font-weight: 700;
+}
+
+.adm-order-card__total {
+  color: var(--ad-yellow) !important;
+}
+
+/* ---------- 17. ORDER DETAIL OVERLAY ------------------------------------- */
+.adm-order-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adm-order-detail__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.adm-order-detail__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.adm-order-detail__total {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--ad-yellow);
+}
+
+.adm-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  border-radius: 999px;
+  /* pill */
+  overflow: hidden;
+}
+
+.adm-qty button {
+  background: transparent;
+  border: 0;
+  color: var(--ad-cream);
+  width: 28px;
+  height: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.adm-qty button:hover:not(:disabled) {
+  background: rgba(254, 252, 79, 0.10);
+  color: var(--ad-yellow);
+}
+
+.adm-qty button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.adm-qty span {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--ad-yellow);
+}
+
+/* ---------- 18. SIGN-IN ERROR (sister-page hook) ------------------------- */
+.si-form__error {
+  background: rgba(255, 122, 147, 0.08);
+  border: 1px solid rgba(255, 122, 147, 0.30);
+  color: #FF7A93;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.si-form__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   19. CUSTOM <select> DROPDOWNS — BRAND-THEMED POPUP
+   Uses the modern "customizable <select>" API (`appearance: base-select` +
+   `::picker(select)`). Supported in Chromium 130+ / Edge 130+. In older
+   browsers (Firefox, Safari, old Chrome) the popup falls back to the native
+   OS rendering — the trigger stays styled, so the experience degrades
+   gracefully without breaking.
+
+   Scope is broad on purpose: every <select> rendered inside the admin
+   surface (whether using .adm-input, sitting inside .adm-field, or a bare
+   select inside .adm-page) gets the treatment.
+   ========================================================================== */
+
+.adm-shell select,
+.adm-shell .adm-input,
+.adm-shell .adm-field select {
+  /* Opt every admin select into the customizable rendering pipeline. */
+  appearance: base-select;
+  -webkit-appearance: base-select;
+}
+
+/* Custom chevron — replace the default filled triangle with a stroke-only
+   yellow chevron (SVG via data URL). Inline-svg keeps the bundle size flat
+   while giving us full control over weight and color. */
+.adm-shell select::picker-icon,
+.adm-shell .adm-field select::picker-icon {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23FEFC4F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5l3 3 3-3'/%3E%3C/svg%3E");
+  width: 14px;
+  height: 14px;
+  color: transparent;
+  transition: transform 0.25s ease;
+}
+
+.adm-shell select:open::picker-icon,
+.adm-shell .adm-field select:open::picker-icon {
+  transform: rotate(180deg);
+}
+
+/* The popup container */
+.adm-shell select::picker(select),
+.adm-shell .adm-field select::picker(select),
+::picker(select) {
+  appearance: base-select;
+  background: linear-gradient(180deg, rgba(17, 26, 46, 0.98), rgba(11, 18, 32, 1));
+  border: 1px solid rgba(254, 252, 79, 0.3);
+  border-radius: 16px;
+  padding: 8px;
+  margin-top: 8px;
+  box-shadow:
+    0 18px 48px -10px rgba(0, 0, 0, 0.65),
+    0 0 24px -10px var(--ad-yellow),
+    inset 0 1px 0 rgba(254, 252, 79, 0.10);
+  font-family: 'VIP Hakm', 'Tajawal', sans-serif;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+/* Individual <option> styling inside the popup.
+   Text is the brand cream-white at full opacity; hover wash is a 10%
+   white veil (no color shift), matching the rest of the admin's
+   "neutral hover" pattern. */
+::picker(select) {
+  background: transparent;
+  color: var(--ad-cream);
+  padding: 0.6rem 0.9rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin: 1px 0;
+}
+
+/* Default checkmark indicator — retinted to brand yellow */
+::picker(select)::checkmark {
+  color: var(--ad-yellow);
+}
+
+/* Hover wash — 10% white, text stays full cream */
+::picker(select) option:hover {
+  background: rgba(247, 240, 245, 0.10);
+  color: var(--ad-cream);
+}
+
+/* Selected option — full yellow with navy ink, mirroring the sidebar's
+   active state for visual consistency. */
+::picker(select) option:checked {
+  background: var(--ad-yellow);
+  color: var(--ad-yellow);
+  font-weight: 700;
+}
+
+::picker(select) option:checked::checkmark {
+  color: var(--ad-ink);
+}
+
+/* =============================================================================
+   20. CUSTOM SCROLLBAR — BRAND-THEMED, EDITABLE
+   ─────────────────────────────────────────────
+   A fully tokenized scrollbar system. Every dimension, colour and glow is
+   controlled by --sb-* custom properties on .adm-shell so any future tweak
+   only requires changing ONE variable.
+
+   Behaviour
+   ─────────
+   • Default:  4 px thin thumb, round ends, subtle cream colour.
+   • Hover:    thumb glows outward (soft yellow bloom).
+   • Dragged:  glow intensifies further for tactile feedback.
+   • Arrows:   filled chevrons inside softly-rounded square buttons.
+
+   Coverage
+   ────────
+   Every element inside .adm-shell that can overflow — main panel, sidebar,
+   tables, modals, and select popups — inherits these scrollbars automatically.
+
+   Editing guide
+   ─────────────
+   Change ONLY the variable values below. Nothing else needs to be touched.
+   ========================================================================== */
+
+.adm-shell {
+  /* ── Dimensions ─────────────────────────────────────────────────────── */
+  --sb-size: 14px;
+  /* total scrollbar width/height     */
+  --sb-thumb-thickness: 4px;
+  /* the visible draggable bar       */
+  --sb-thumb-radius: 999px;
+  /* round caps (pill shape)         */
+  --sb-btn-radius: 5px;
+  /* arrow button corner radius      */
+
+  /* ── Colours ────────────────────────────────────────────────────────── */
+  --sb-track-bg: rgba(247, 240, 245, 0.04);
+  --sb-thumb-bg: rgba(247, 240, 245, 0.38);
+  --sb-thumb-hover-bg: rgba(247, 240, 245, 0.55);
+  --sb-thumb-active-bg: rgba(254, 252, 79, 0.70);
+  --sb-btn-bg: rgba(247, 240, 245, 0.06);
+  --sb-btn-hover-bg: rgba(254, 252, 79, 0.12);
+  --sb-btn-arrow: rgba(247, 240, 245, 0.50);
+  --sb-btn-arrow-hover: var(--ad-yellow);
+  --sb-corner-bg: rgba(247, 240, 245, 0.02);
+
+  /* ── Glow ───────────────────────────────────────────────────────────── */
+  --sb-glow-hover: 0 0 6px 1px rgba(254, 252, 79, 0.25);
+  --sb-glow-active: 0 0 12px 2px rgba(254, 252, 79, 0.45),
+    0 0 4px 0 rgba(254, 252, 79, 0.30);
+
+  /* ── Transition ─────────────────────────────────────────────────────── */
+  --sb-transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* ── Ensure the sidebar scrolls when nav items exceed viewport ──────── */
+.adm-sidebar {
+  overflow-y: auto;
+}
+
+/* ── Base scrollbar channel ─────────────────────────────────────────── */
+.adm-shell ::-webkit-scrollbar,
+.adm-shell::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+/* ── Track (the gutter) ─────────────────────────────────────────────── */
+.adm-shell ::-webkit-scrollbar-track,
+.adm-shell::-webkit-scrollbar-track {
+  background: var(--sb-track-bg);
+  border-radius: var(--sb-thumb-radius);
+}
+
+/* ── Thumb (the draggable bar) ──────────────────────────────────────── */
+.adm-shell ::-webkit-scrollbar-thumb,
+.adm-shell::-webkit-scrollbar-thumb {
+  /* The thin line effect: thick transparent borders clip the thumb to
+     --sb-thumb-thickness via background-clip. */
+  background: var(--sb-thumb-bg);
+  background-clip: padding-box;
+  border: calc((var(--sb-size) - var(--sb-thumb-thickness)) / 2) solid transparent;
+  border-radius: var(--sb-thumb-radius);
+  transition: var(--sb-transition);
+}
+
+/* Hover — outer glow */
+.adm-shell ::-webkit-scrollbar-thumb:hover,
+.adm-shell::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover-bg);
+  background-clip: padding-box;
+  border: calc((var(--sb-size) - var(--sb-thumb-thickness)) / 2) solid transparent;
+  box-shadow: var(--sb-glow-hover);
+}
+
+/* Active / dragged — stronger glow */
+.adm-shell ::-webkit-scrollbar-thumb:active,
+.adm-shell::-webkit-scrollbar-thumb:active {
+  background: var(--sb-thumb-active-bg);
+  background-clip: padding-box;
+  border: calc((var(--sb-size) - var(--sb-thumb-thickness)) / 2) solid transparent;
+  box-shadow: var(--sb-glow-active);
+}
+
+/* ── Arrow buttons (top / bottom / left / right) ────────────────────── */
+.adm-shell ::-webkit-scrollbar-button,
+.adm-shell::-webkit-scrollbar-button {
+  background: var(--sb-btn-bg);
+  border-radius: var(--sb-btn-radius);
+  display: block;
+  width: var(--sb-size);
+  height: var(--sb-size);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 8px 8px;
+  transition: var(--sb-transition);
+}
+
+.adm-shell ::-webkit-scrollbar-button:hover,
+.adm-shell::-webkit-scrollbar-button:hover {
+  background-color: var(--sb-btn-hover-bg);
+}
+
+/* ▲ Up arrow (vertical scrollbar, decrement) */
+.adm-shell ::-webkit-scrollbar-button:vertical:decrement,
+.adm-shell::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 7L5 3l3 4z' fill='%23F7F0F5' fill-opacity='0.50'/%3E%3C/svg%3E");
+}
+
+.adm-shell ::-webkit-scrollbar-button:vertical:decrement:hover,
+.adm-shell::-webkit-scrollbar-button:vertical:decrement:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 7L5 3l3 4z' fill='%23FEFC4F'/%3E%3C/svg%3E");
+}
+
+/* ▼ Down arrow (vertical scrollbar, increment) */
+.adm-shell ::-webkit-scrollbar-button:vertical:increment,
+.adm-shell::-webkit-scrollbar-button:vertical:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 3L5 7l3-4z' fill='%23F7F0F5' fill-opacity='0.50'/%3E%3C/svg%3E");
+}
+
+.adm-shell ::-webkit-scrollbar-button:vertical:increment:hover,
+.adm-shell::-webkit-scrollbar-button:vertical:increment:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 3L5 7l3-4z' fill='%23FEFC4F'/%3E%3C/svg%3E");
+}
+
+/* ◀ Left arrow (horizontal scrollbar, decrement) */
+.adm-shell ::-webkit-scrollbar-button:horizontal:decrement,
+.adm-shell::-webkit-scrollbar-button:horizontal:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M7 2L3 5l4 3z' fill='%23F7F0F5' fill-opacity='0.50'/%3E%3C/svg%3E");
+}
+
+.adm-shell ::-webkit-scrollbar-button:horizontal:decrement:hover,
+.adm-shell::-webkit-scrollbar-button:horizontal:decrement:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M7 2L3 5l4 3z' fill='%23FEFC4F'/%3E%3C/svg%3E");
+}
+
+/* ▶ Right arrow (horizontal scrollbar, increment) */
+.adm-shell ::-webkit-scrollbar-button:horizontal:increment,
+.adm-shell::-webkit-scrollbar-button:horizontal:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 2l4 3-4 3z' fill='%23F7F0F5' fill-opacity='0.50'/%3E%3C/svg%3E");
+}
+
+.adm-shell ::-webkit-scrollbar-button:horizontal:increment:hover,
+.adm-shell::-webkit-scrollbar-button:horizontal:increment:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 2l4 3-4 3z' fill='%23FEFC4F'/%3E%3C/svg%3E");
+}
+
+/* ── Corner piece (where vertical and horizontal bars meet) ─────────── */
+.adm-shell ::-webkit-scrollbar-corner,
+.adm-shell::-webkit-scrollbar-corner {
+  background: var(--sb-corner-bg);
+  border-radius: var(--sb-btn-radius);
+}
+
+/* ── Firefox fallback ───────────────────────────────────────────────── */
+/* Firefox only supports thin/auto and two colours. This is the
+   graceful degradation — shape won't match perfectly but the palette
+   stays on-brand. */
+.adm-shell,
+.adm-shell * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb-bg) var(--sb-track-bg);
+}
+
+/* ---------- ORDER PROGRESS BAR ----------------------------------------- */
+.adm-progress {
+  margin: 0.25rem 0;
+}
+
+.adm-progress__bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(247, 240, 245, 0.06);
+  overflow: hidden;
+}
+
+.adm-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.adm-progress__labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+/* ---------- STATUS BUTTONS (all 4) ------------------------------------- */
+.adm-status-btns {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.adm-status-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(247, 240, 245, 0.12);
+  background: transparent;
+  color: rgba(247, 240, 245, 0.50);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.adm-status-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.adm-status-btn__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.adm-status-btn__tag {
+  font-size: 0.62rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  background: rgba(247, 240, 245, 0.08);
+  color: rgba(247, 240, 245, 0.55);
+}
+
+.adm-status-btn--pending {
+  border-color: rgba(254, 252, 79, 0.20);
+  color: #FEFC4F;
+}
+
+.adm-status-btn--accepted {
+  border-color: rgba(91, 216, 232, 0.20);
+  color: #5BD8E8;
+}
+
+.adm-status-btn--done {
+  border-color: rgba(19, 189, 132, 0.20);
+  color: #13BD84;
+}
+
+.adm-status-btn--rejected {
+  border-color: rgba(255, 122, 147, 0.20);
+  color: #FF7A93;
+}
+
+.adm-status-btn.is-current {
+  opacity: 1 !important;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.adm-status-btn.is-allowed:not(:disabled):hover {
+  background: currentColor;
+  color: var(--ad-ink);
+}
+
+.adm-status-btn.is-allowed:not(:disabled):hover .adm-status-btn__dot {
+  opacity: 1;
+}
+
+/* ---------- DESIGN FILES LIST ------------------------------------------ */
+.adm-design-files {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.adm-design-file {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  background: rgba(254, 252, 79, 0.03);
+  border: 1px solid rgba(254, 252, 79, 0.12);
+}
+
+.adm-design-file__ext {
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(254, 252, 79, 0.12);
+  color: var(--ad-yellow);
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.adm-design-file__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.82rem;
+  color: var(--ad-cream);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- CHAT SIDE PANEL -------------------------------------------- */
+.adm-chat-panel-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.adm-chat-panel {
+  width: 380px;
+  max-width: 90vw;
+  height: 100vh;
+  background: var(--ad-ink);
+  border-inline-start: 1px solid rgba(254, 252, 79, 0.12);
+  display: flex;
+  flex-direction: column;
+  animation: adm-chat-slide 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes adm-chat-slide {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.adm-chat-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.adm-chat-panel__head h4 {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 1rem;
+  color: var(--ad-cream);
+  margin: 0;
+}
+
+.adm-chat-panel__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(247, 240, 245, 0.12);
+  background: transparent;
+  color: rgba(247, 240, 245, 0.55);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.adm-chat-panel__close:hover {
+  border-color: var(--ad-yellow);
+  color: var(--ad-yellow);
+}
+
+.adm-chat-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.adm-chat-panel__input {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.adm-chat-panel__input input {
+  flex: 1;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  background: rgba(247, 240, 245, 0.03);
+  color: var(--ad-cream);
+  font-family: inherit;
+  font-size: 0.84rem;
+  outline: none;
+}
+
+.adm-chat-panel__input input:focus {
+  border-color: rgba(254, 252, 79, 0.35);
+}
+
+.adm-chat-panel__input input::placeholder {
+  color: rgba(247, 240, 245, 0.30);
+}
+
+.adm-chat-panel__input button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.adm-chat-panel__input button:hover {
+  box-shadow: 0 4px 16px var(--ad-yellow-glow);
+}
+
+.adm-chat-panel__input button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

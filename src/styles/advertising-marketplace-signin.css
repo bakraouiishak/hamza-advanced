@@ -1,0 +1,486 @@
+/* =============================================================================
+   HAMZA ADVANCED — MARKETPLACE SIGN-IN PAGE
+   Extends .ad-scope (advertising.css) + marketplace primitives. All classes
+   are prefixed with .si- (sign-in) to avoid collisions.
+
+   Layout: two-panel split — form on the RTL-start (right), decorative
+   graphic on the RTL-end (left). Below 1024px, the graphic panel collapses
+   and the form takes full width.
+   ========================================================================== */
+
+/* ---------- 1. PAGE SPLIT -------------------------------------------------- */
+.si-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+
+@media (min-width: 1024px) {
+  .si-page {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1440px) {
+  .si-page {
+    grid-template-columns: 1.1fr 1fr;
+  }
+}
+
+/* ---------- 2. FORM PANEL -------------------------------------------------- */
+.si-panel--form {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem);
+  background: var(--ad-ink);
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+}
+
+.si-panel__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 2rem;
+}
+
+/* ---------- 3. HEADER (logo + back link) ----------------------------------- */
+.si-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.si-header__logo img {
+  height: 40px;
+  width: auto;
+  transition: filter 0.3s ease;
+}
+
+.si-header__logo:hover img {
+  filter: brightness(1.15);
+}
+
+.si-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(247, 240, 245, 0.55);
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(247, 240, 245, 0.10);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.si-header__back:hover {
+  color: var(--ad-cream);
+  border-color: rgba(247, 240, 245, 0.25);
+  background: rgba(247, 240, 245, 0.04);
+}
+
+.si-header__back svg {
+  transform: scaleX(-1);
+  /* flip arrow for RTL */
+}
+
+/* ---------- 4. FORM -------------------------------------------------------- */
+.si-form {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* — Eyebrow — */
+.si-form__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ad-yellow);
+  margin-bottom: 0.6rem;
+}
+
+.si-form__eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ad-yellow);
+  box-shadow: 0 0 12px var(--ad-yellow);
+}
+
+/* — Heading — */
+.si-form__heading {
+  font-family: 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+  line-height: 1.2;
+  color: var(--ad-cream);
+  margin-bottom: 0.55rem;
+}
+
+.si-hl {
+  color: var(--ad-yellow);
+}
+
+/* — Description — */
+.si-form__desc {
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.55);
+  margin-bottom: 2rem;
+}
+
+/* ---------- 5. FIELDS ------------------------------------------------------ */
+.si-field {
+  margin-bottom: 1.25rem;
+}
+
+.si-field__label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: rgba(247, 240, 245, 0.72);
+  margin-bottom: 0.5rem;
+}
+
+.si-field__wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(247, 240, 245, 0.04);
+  border: 1.5px solid rgba(247, 240, 245, 0.10);
+  border-radius: 14px;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+}
+
+.si-field__wrap:focus-within {
+  border-color: rgba(254, 252, 79, 0.45);
+  background: rgba(254, 252, 79, 0.03);
+  box-shadow: 0 0 0 4px rgba(254, 252, 79, 0.08);
+}
+
+.si-field__icon {
+  position: absolute;
+  inset-inline-start: 1rem;
+  color: rgba(247, 240, 245, 0.35);
+  pointer-events: none;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.si-field__wrap:focus-within .si-field__icon {
+  color: var(--ad-yellow);
+}
+
+.si-field__input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 3rem;
+  padding-inline-start: 3rem;
+  padding-inline-end: 1rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--ad-cream);
+  direction: ltr;
+  text-align: left;
+}
+
+.si-field__input::placeholder {
+  color: rgba(247, 240, 245, 0.30);
+  font-size: 0.88rem;
+}
+
+/* Password has a toggle on the end side */
+.si-field__wrap:has(.si-field__toggle) .si-field__input {
+  padding-inline-end: 3rem;
+}
+
+.si-field__toggle {
+  position: absolute;
+  inset-inline-end: 0.75rem;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: rgba(247, 240, 245, 0.35);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.si-field__toggle:hover {
+  color: var(--ad-yellow);
+  background: rgba(254, 252, 79, 0.08);
+}
+
+/* ---------- 6. OPTIONS ROW ------------------------------------------------- */
+.si-form__options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  gap: 1rem;
+}
+
+/* Custom checkbox */
+.si-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.si-checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.si-checkbox__box {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(247, 240, 245, 0.20);
+  background: rgba(247, 240, 245, 0.04);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.si-checkbox input:checked+.si-checkbox__box {
+  background: var(--ad-yellow);
+  border-color: var(--ad-yellow);
+}
+
+.si-checkbox input:checked+.si-checkbox__box::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid var(--ad-ink);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.si-checkbox__text {
+  font-size: 0.84rem;
+  color: rgba(247, 240, 245, 0.55);
+}
+
+.si-form__forgot {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ad-yellow);
+  background: transparent;
+  border: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.si-form__forgot:hover {
+  opacity: 0.9;
+}
+
+/* ---------- 7. SUBMIT BUTTON ----------------------------------------------- */
+.si-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.95rem 1.4rem;
+  border-radius: 50px;
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  font-weight: 700;
+  font-size: 0.96rem;
+  border: 2px solid var(--ad-yellow);
+  cursor: pointer;
+  transition: all 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+  letter-spacing: 0.02em;
+}
+
+.si-form__submit:hover {
+  background: rgba(254, 252, 79, 0.01);
+  color: var(--ad-yellow);
+  border-color: var(--ad-yellow);
+  box-shadow:
+    0px 0px 20px var(--ad-yellow-glow);
+}
+
+.si-form__submit:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.si-form__submit svg {
+  transform: scaleX(-1);
+  transition: all 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* RTL arrow flip */
+}
+
+.si-form__submit:hover svg {
+  transform: scaleX(-1.1) translateX(2px);
+}
+
+/* ---------- 8. DIVIDER ----------------------------------------------------- */
+.si-form__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1.75rem 0 1.25rem;
+}
+
+.si-form__divider span {
+  flex: 1;
+  height: 1px;
+  background: rgba(247, 240, 245, 0.08);
+}
+
+.si-form__divider p {
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.38);
+  white-space: nowrap;
+}
+
+/* ---------- 9. SIGN-UP LINK ----------------------------------------------- */
+.si-form__signup-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1.4rem;
+  border-radius: 40px;
+  background: rgba(247, 240, 245, 0.04);
+  color: rgba(247, 240, 245, 0.72);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: 1.5px solid rgba(247, 240, 245, 0.12);
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.si-form__signup-link:hover {
+  border-color: rgba(254, 252, 79, 0.35);
+  color: var(--ad-yellow);
+  background: rgba(254, 252, 79, 0.04);
+}
+
+.si-form__signup-link svg {
+  transform: scaleX(-1);
+  opacity: 0.6;
+}
+
+/* ---------- 10. GRAPHIC PANEL ---------------------------------------------- */
+.si-panel--graphic {
+  display: none;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .si-panel--graphic {
+    display: block;
+  }
+}
+
+.si-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.si-graphic__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top right;
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.si-graphic__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(11, 18, 32, 0.85) 0%, rgba(11, 18, 32, 0.15) 35%, transparent 60%),
+    linear-gradient(180deg, transparent 50%, rgba(11, 18, 32, 0.55) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.si-graphic__watermark {
+  position: absolute;
+  bottom: 2.5rem;
+  inset-inline-end: 2.5rem;
+  z-index: 2;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.si-graphic__watermark img {
+  width: 100px;
+  height: auto;
+  filter: brightness(1.4);
+}
+
+/* ---------- 11. RESPONSIVE TWEAKS ------------------------------------------ */
+@media (max-width: 1023px) {
+  .si-panel--form {
+    min-height: auto;
+    padding-bottom: 3rem;
+  }
+
+  /* Show a subtle background hint of the graphic on mobile */
+  .si-panel--form::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 10%, rgba(254, 252, 79, 0.08), transparent 55%),
+      radial-gradient(ellipse at 20% 90%, rgba(254, 252, 79, 0.04), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .si-header,
+  .si-panel__content {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .si-form__heading {
+    font-size: 1.5rem;
+  }
+
+  .si-form__options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+}

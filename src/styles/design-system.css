@@ -1,0 +1,1110 @@
+/* =============================================================================
+   HAMZA ADVANCED — DESIGN SYSTEM (v1.0)
+   Single source of truth for typography, color tokens, motion, and primitives.
+   This file is referenced by every page in the Hamza universe. Sector pages
+   override only the [data-sector] custom properties — never the structural
+   tokens — so the system stays coherent across the 5 sub-brands.
+   ========================================================================== */
+
+/* ---------- 1. FONT FACES -----------------------------------------------------
+   Drop typeface files into /public/fonts/ to activate the brand fonts.
+   Until then, the sans-serif fallback chain (Tajawal/Cairo/Reem Kufi) carries.
+   --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'VIP Hakm';
+  src: url('/fonts/VIP Hakm Thin 2016.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VIP Hakm';
+  src: url('/fonts/VIP Hakm Regular 2016.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VIP Hakm';
+  src: url('/fonts/VIP Hakm Bold 2016.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VIP Hala';
+  src: url('/fonts/VIP Hala Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Year Of The Camel';
+  src: url('/fonts/YearOfTheCamel-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Year Of The Camel';
+  src: url('/fonts/YearOfTheCamel-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- 2. CORE TOKENS (CSS CUSTOM PROPERTIES) --------------------------
+   Sector pages will override --accent / --accent-soft / --accent-contrast
+   under [data-sector="ads|events|electric|travel|catering"] to retheme
+   without rebuilding the system.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Brand primary palette (PDF p.59) */
+  --ink: #0B1220;
+  --ink-700: #1A2540;
+  --ink-800: #111A2E;
+  --emerald: #13BD84;
+  --emerald-soft: #2BD89A;
+  --emerald-deep: #0E9968;
+  --cream: #F7F0F5;
+  --cream-100: #FBF7FA;
+  --cream-300: #EFE3EB;
+
+  /* Default accent = emerald (Hamza Advanced main brand) */
+  --accent: var(--emerald);
+  --accent-soft: var(--emerald-soft);
+  --accent-deep: var(--emerald-deep);
+  --accent-contrast: #ffffff;
+
+  /* Sector colors (PDF p.61) — used in sector-specific UIs */
+  --sector-ads: #FEFC4F;
+  --sector-events: #EE4266;
+  --sector-electric: #008CFF;
+  --sector-travel: #2ADBD6;
+  --sector-catering: #D79F56;
+
+  /* Typography ramp */
+  --fs-display: clamp(2.25rem, 5vw, 4rem);
+  --fs-h1: clamp(1.75rem, 3.5vw, 2.75rem);
+  --fs-h2: clamp(1.35rem, 2.4vw, 2rem);
+  --fs-h3: 1.25rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+
+  --lh-tight: 1.5;
+  --lh-snug: 1.6;
+  --lh-body: 1.8;
+
+  /* Spacing scale */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-24: 6rem;
+
+  /* Radii / strokes */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --hairline: 1px solid rgba(247, 240, 245, 0.08);
+  --stroke-subtle: 1px solid rgba(247, 240, 245, 0.10);
+  --stroke-medium: 1px solid rgba(247, 240, 245, 0.15);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur: 320ms;
+  --dur-slow: 560ms;
+
+  /* Layering */
+  --z-nav: 60;
+  --z-modal: 80;
+  --z-toast: 90;
+}
+
+/* Sector overrides — used when a card is clicked on the homepage hero,
+   or when navigating to a sector subpage. Apply via <body data-sector="ads">. */
+[data-sector='ads'] {
+  --accent: #FEFC4F;
+  --accent-soft: #FFFD80;
+  --accent-deep: #D6D32A;
+  --accent-contrast: #0B1220;
+}
+
+[data-sector='events'] {
+  --accent: #EE4266;
+  --accent-soft: #F4708A;
+  --accent-deep: #C12D4D;
+}
+
+[data-sector='electric'] {
+  --accent: #008CFF;
+  --accent-soft: #4DAEFF;
+  --accent-deep: #0070CC;
+}
+
+[data-sector='travel'] {
+  --accent: #2ADBD6;
+  --accent-soft: #5DE6E2;
+  --accent-deep: #1EA8A4;
+  --accent-contrast: #0B1220;
+}
+
+[data-sector='catering'] {
+  --accent: #D79F56;
+  --accent-soft: #E5B981;
+  --accent-deep: #B07F3D;
+}
+
+/* ---------- 3. RESET / BASE -------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--cream);
+  background: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ---------- 4. TYPOGRAPHY PRIMITIVES ----------------------------------------- */
+.h-display {
+  font-family: 'VIP Hala', 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+}
+
+.h-1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  font-weight: 700;
+  margin-bottom: 0.15em;
+}
+
+.h-2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  font-weight: 700;
+}
+
+.h-3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  font-weight: 600;
+}
+
+/* The brand "green-dot" terminator (PDF p.29) — every section title ends with
+   a small green dot to echo the logo without re-displaying it. */
+.dot-end::after {
+  content: '';
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-inline-start: 0.18em;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: middle;
+  transform: translateY(0.04em);
+  box-shadow: 0 0 0 0.12em color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: rgba(247, 240, 245, 0.55);
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: rgba(247, 240, 245, 0.25);
+}
+
+/* ---------- 5. BUTTONS ------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.72rem 1.45rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  transition: all 0.4s ease;
+}
+
+.btn:active {
+  transform: translateY(2px) scale(0.97);
+}
+
+.btn-primary {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent-contrast);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: 0 0 20px -5px color-mix(in srgb, var(--accent) 50%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.btn-primary::before {
+  background: var(--accent);
+  opacity: 0.8;
+}
+
+.btn-primary:hover {
+  border-color: color-mix(in srgb, var(--accent-soft) 80%, transparent);
+  box-shadow: 0 0 35px -2px color-mix(in srgb, var(--accent) 80%, transparent),
+    inset 0 0 15px color-mix(in srgb, var(--accent) 50%, transparent);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-ghost {
+  background: rgba(247, 240, 245, 0.03);
+  color: var(--cream);
+  border-color: rgba(247, 240, 245, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.btn-ghost:hover {
+  background: rgba(247, 240, 245, 0.1);
+  border-color: rgba(247, 240, 245, 0.4);
+  box-shadow: 0 0 20px -5px rgba(247, 240, 245, 0.15),
+    inset 0 0 10px rgba(247, 240, 245, 0.05);
+}
+
+.btn-dark {
+  background: var(--ink);
+  color: var(--cream);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.btn-dark:hover {
+  background: var(--ink-700);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- 6. PRIMITIVE: GLASS CARD ----------------------------------------- */
+/* Dark-mode glass cards inspired by Bankerise reference: frosted glass,
+   subtle white borders, accent-glow on hover */
+.surface {
+  background: linear-gradient(135deg, rgba(26, 37, 64, 0.4) 0%, rgba(11, 18, 32, 0.6) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-top: 1px solid rgba(247, 240, 245, 0.12);
+  border-left: 1px solid rgba(247, 240, 245, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.surface:hover {
+  border-color: rgba(247, 240, 245, 0.25);
+  box-shadow: 0 15px 45px -10px rgba(0, 0, 0, 0.5),
+    0 0 20px -5px color-mix(in srgb, var(--accent) 30%, transparent);
+  transform: translateY(-4px);
+}
+
+.surface:hover::after {
+  opacity: 1;
+}
+
+.surface-dark {
+  background: linear-gradient(180deg, rgba(26, 37, 64, 0.8), rgba(11, 18, 32, 0.95));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--cream);
+  border: 1px solid rgba(247, 240, 245, 0.05);
+  border-top: 1px solid rgba(247, 240, 245, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.5s ease;
+}
+
+.surface-dark:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- 7. BRAND PATTERN BG (quartered-circle motif PDF p.27) ------------ */
+.bg-hamza-pattern {
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(circle at 0 0, var(--ink-700) 14px, transparent 15px),
+    radial-gradient(circle at 100% 0, var(--ink-700) 14px, transparent 15px),
+    radial-gradient(circle at 0 100%, var(--ink-700) 14px, transparent 15px),
+    radial-gradient(circle at 100% 100%, var(--ink-700) 14px, transparent 15px);
+  background-size: 56px 56px;
+}
+
+/* ---------- 8. UTILITIES ----------------------------------------------------- */
+.container-x {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* RTL-aware focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Hide scrollbar utility for horizontal card row */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+
+/* ---------- 11. NAVBAR (dark glass) ------------------------------------------ */
+.navbar-glass {
+  background: rgba(11, 18, 32, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(200px);
+  border-bottom: 1px solid rgba(19, 189, 132, 0.08);
+  transition: background var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.navbar-glass.scrolled {
+  background: rgba(11, 18, 32, 0.80);
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.4);
+}
+
+.nav-link-dark {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(247, 240, 245, 0.75);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-link-dark:hover {
+  color: var(--cream);
+  background: rgba(247, 240, 245, 0.06);
+  box-shadow: inset 0 0 10px rgba(247, 240, 245, 0.05);
+}
+
+/* Sector dropdown on dark bg */
+.surface-dropdown {
+  background: linear-gradient(180deg, rgba(17, 26, 46, 0.7), rgba(11, 18, 32, 0.85));
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Language toggle — #F7F0F5 border & text at 25% opacity, 100% on hover */
+.nav-lang-toggle {
+  border: 1px solid rgba(247, 240, 245, 0.25);
+  color: rgba(247, 240, 245, 0.25);
+  gap: 0.5rem;
+  padding: 0.55rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-lang-toggle svg {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.nav-lang-toggle:hover {
+  color: #F7F0F5;
+  border-color: #F7F0F5;
+}
+
+.nav-lang-toggle:hover svg {
+  opacity: 1;
+}
+
+/* Navbar CTA — solid emerald pill */
+.nav-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-pill);
+  background: var(--emerald);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-cta-btn:hover {
+  background: var(--emerald-soft);
+  box-shadow: 0 0 20px -4px rgba(19, 189, 132, 0.5);
+}
+
+.nav-cta-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.nav-cta-btn svg {
+  transition: transform 0.5s ease-out;
+  transform: rotate(180deg);
+}
+
+.nav-cta-btn:hover svg {
+  transform: translateX(-2px) rotate(180deg) ease-out;
+}
+
+/* ---------- 12. NAVBAR MEGA-MENU (full-bleed dropdowns) ---------------------- */
+
+/* Outer panel — 100vw, sits flush under the navbar */
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(13, 21, 38, 0.96) 0%, rgba(8, 13, 24, 0.98) 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-top: 1px solid rgba(247, 240, 245, 0.08);
+  border-bottom: 1px solid rgba(247, 240, 245, 0.05);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  z-index: 50;
+}
+
+/* Soft ambient glow strip at the very top */
+.mega-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(900px, 80%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(19, 189, 132, 0.4) 50%, transparent 100%);
+}
+
+.mega-menu__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px clamp(20px, 4vw, 56px) 32px;
+}
+
+.mega-menu__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.mega-menu__eyebrow {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--emerald);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mega-menu__title {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  font-weight: 700;
+  color: var(--cream);
+  margin: 0;
+}
+
+.mega-menu__hint {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.45);
+}
+
+/* ── Sector grid ──────────────────────────────────────────────────────────── */
+.sector-mega-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 1180px) {
+  .sector-mega-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .sector-mega-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .sector-mega-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Sector card — identity-driven, accent color sets the universe ──────── */
+.sector-card {
+  --card-accent: #13BD84;
+  --card-accent-soft: #2BD89A;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  padding: 18px 18px 16px;
+  background: linear-gradient(160deg, rgba(247, 240, 245, 0.035) 0%, rgba(247, 240, 245, 0.01) 100%);
+  border: 1px solid rgba(247, 240, 245, 0.07);
+  border-radius: var(--radius);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.5s ease;
+  filter: grayscale(1);
+}
+
+.sector-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, var(--card-accent) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.sector-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--card-accent), transparent);
+  opacity: 0;
+  box-shadow: 0 0 24px var(--card-accent);
+  transition: opacity 0.4s ease;
+}
+
+.sector-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--card-accent) 45%, transparent);
+  background: linear-gradient(160deg,
+      color-mix(in srgb, var(--card-accent) 12%, transparent) 0%,
+      rgba(247, 240, 245, 0.02) 100%);
+  box-shadow: 0 18px 40px -16px color-mix(in srgb, var(--card-accent) 25%, transparent);
+  filter: grayscale(0);
+}
+
+.sector-card:hover::before {
+  opacity: 0.18;
+}
+
+.sector-card:hover::after {
+  opacity: 1;
+}
+
+/* Hero illustration block */
+.sector-card__hero {
+  position: relative;
+  height: 92px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--card-accent) 20%, transparent) 0%, transparent 70%),
+    rgba(11, 18, 32, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(247, 240, 245, 0.05);
+  padding: 14px 18px;
+}
+
+.sector-card__hero img {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.4));
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  inset: 4px 0px;
+  scale: 0.75;
+}
+
+.sector-card:hover .sector-card__hero img {
+  transform: scale(1.08);
+}
+
+/* Decorative accent dots (subtle identity pattern) */
+.sector-card__hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(247, 240, 245, 0.05) 1px, transparent 1px);
+  background-size: 12px 12px;
+  opacity: 0.5;
+}
+
+/* Name row with mini glyph */
+.sector-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.sector-card__glyph {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--card-accent) 22%, transparent);
+  color: var(--card-accent);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+.sector-card:hover .sector-card__glyph {
+  background: var(--card-accent);
+  color: var(--ink);
+}
+
+.sector-card__name {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.sector-card__tagline {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--card-accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+
+.sector-card__desc {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.74rem;
+  line-height: 1.65;
+  color: rgba(247, 240, 245, 0.55);
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sector-card__cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: rgba(247, 240, 245, 0.7);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(247, 240, 245, 0.15);
+  background: rgba(247, 240, 245, 0.02);
+  align-self: flex-start;
+  transition: all 0.35s ease;
+}
+
+.sector-card:hover .sector-card__cta {
+  color: var(--ink);
+  background: var(--card-accent);
+  border-color: var(--card-accent);
+  box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--card-accent) 55%, transparent);
+}
+
+.sector-card__cta svg {
+  transition: transform 0.3s ease;
+  transform: rotate(180deg);
+  /* RTL arrow */
+}
+
+.sector-card:hover .sector-card__cta svg {
+  transform: rotate(180deg) translateX(-2px);
+}
+
+/* ── Vision mega menu — full-width version of the dual-card showcase ─── */
+.vision-mega {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  gap: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(247, 240, 245, 0.07);
+  background: rgba(11, 18, 32, 0.4);
+  min-height: 240px;
+}
+
+@media (max-width: 980px) {
+  .vision-mega {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vision-mega__intro {
+  position: relative;
+  padding: 28px 32px;
+  background:
+    linear-gradient(135deg, rgba(19, 189, 132, 0.08) 0%, rgba(11, 18, 32, 0.6) 100%),
+    url('/images/vision2030/background.jpg') center/cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  border-inline-end: 1px solid rgba(247, 240, 245, 0.06);
+}
+
+.vision-mega__intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 18, 32, 0.55), rgba(11, 18, 32, 0.85));
+  pointer-events: none;
+}
+
+.vision-mega__intro>* {
+  position: relative;
+  z-index: 1;
+}
+
+.vision-mega__intro-eyebrow {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--emerald);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.vision-mega__intro-title {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.vision-mega__intro-desc {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.6);
+  margin: 0;
+  max-width: 420px;
+}
+
+.vision-mega__intro-graphic {
+  position: absolute;
+  bottom: -10px;
+  inset-inline-end: -10px;
+  width: 130px;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 24px rgba(19, 189, 132, 0.4));
+  z-index: 0;
+}
+
+/* Mobile menu — sector cards */
+.mobile-sector-card {
+  --card-accent: #13BD84;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  background: rgba(247, 240, 245, 0.02);
+  text-align: start;
+  transition: all 0.3s ease;
+}
+
+.mobile-sector-card:active,
+.mobile-sector-card:hover {
+  border-color: color-mix(in srgb, var(--card-accent) 50%, transparent);
+  background: color-mix(in srgb, var(--card-accent) 10%, transparent);
+}
+
+.mobile-sector-card__glyph {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--card-accent) 18%, transparent);
+  color: var(--card-accent);
+}
+
+.mobile-sector-card__name {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.mobile-sector-card__tag {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.7rem;
+  color: var(--card-accent);
+  margin-top: 2px;
+}
+
+.mobile-section-title {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--emerald);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 10px 4px 6px;
+}
+
+/* =========================================================================
+   DESKTOP NAVBAR LINK HOVER ANIMATIONS (RTL Right-to-Left Underline)
+   ========================================================================= */
+@media (min-width: 1024px) {
+  .nav-link-dark,
+  .ad-nav__link,
+  .ct-nav__link,
+  .el-nav__link,
+  .ev-nav__link,
+  .tr-nav__link {
+    color: rgba(247, 240, 245, 0.75) !important;
+    position: relative !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding-left: 0.2rem !important;
+    padding-right: 0.2rem !important;
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+    transition: color 0.3s ease-in-out !important;
+    border: 0 !important;
+    cursor: pointer !important;
+  }
+
+  /* 2. Hovered link colors to var(--accent) */
+  .nav-link-dark:hover,
+  .ad-nav__link:hover,
+  .ct-nav__link:hover,
+  .el-nav__link:hover,
+  .ev-nav__link:hover,
+  .tr-nav__link:hover {
+    color: var(--accent) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* 2. Bottom outline animates right-to-left */
+  .nav-link-dark::after,
+  .ad-nav__link::after,
+  .ct-nav__link::after,
+  .el-nav__link::after,
+  .ev-nav__link::after,
+  .tr-nav__link::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -2px !important;
+    right: 0 !important; /* Starts on the right (start in RTL) */
+    left: auto !important;
+    width: 0 !important;
+    height: 1.5px !important;
+    background: var(--accent) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent) !important;
+    transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .nav-link-dark:hover::after,
+  .ad-nav__link:hover::after,
+  .ct-nav__link:hover::after,
+  .el-nav__link:hover::after,
+  .ev-nav__link:hover::after,
+  .tr-nav__link:hover::after {
+    width: 100% !important; /* Grows from right-to-left */
+  }
+
+  /* 3. Visited link colored to var(--accent), bottom outline removes */
+  .nav-link-dark[aria-current='page'],
+  .nav-link-dark.active,
+  .nav-link-dark[aria-expanded='true'],
+  .ad-nav__link[aria-current='page'],
+  .ad-nav__link.active,
+  .ct-nav__link[aria-current='page'],
+  .ct-nav__link.active,
+  .el-nav__link[aria-current='page'],
+  .el-nav__link.active,
+  .ev-nav__link[aria-current='page'],
+  .ev-nav__link.active,
+  .tr-nav__link[aria-current='page'],
+  .tr-nav__link.active {
+    color: var(--accent) !important;
+    font-weight: 600 !important;
+  }
+
+  .nav-link-dark[aria-current='page']::after,
+  .nav-link-dark.active::after,
+  .nav-link-dark[aria-expanded='true']::after,
+  .ad-nav__link[aria-current='page']::after,
+  .ad-nav__link.active::after,
+  .ct-nav__link[aria-current='page']::after,
+  .ct-nav__link.active::after,
+  .el-nav__link[aria-current='page']::after,
+  .el-nav__link.active::after,
+  .ev-nav__link[aria-current='page']::after,
+  .ev-nav__link.active::after,
+  .tr-nav__link[aria-current='page']::after,
+  .tr-nav__link.active::after {
+    width: 0 !important; /* Removes underline in unhovered state */
+  }
+
+  /* 4. Visited hovered: Same as 2. Hovered link (underline grows) */
+  .nav-link-dark[aria-current='page']:hover::after,
+  .nav-link-dark.active:hover::after,
+  .nav-link-dark[aria-expanded='true']:hover::after,
+  .ad-nav__link[aria-current='page']:hover::after,
+  .ad-nav__link.active:hover::after,
+  .ct-nav__link[aria-current='page']:hover::after,
+  .ct-nav__link.active:hover::after,
+  .el-nav__link[aria-current='page']:hover::after,
+  .el-nav__link.active:hover::after,
+  .ev-nav__link[aria-current='page']:hover::after,
+  .ev-nav__link.active:hover::after,
+  .tr-nav__link[aria-current='page']:hover::after,
+  .tr-nav__link.active:hover::after {
+    width: 100% !important;
+  }
+}

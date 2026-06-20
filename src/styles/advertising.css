@@ -1,0 +1,1622 @@
+/* =============================================================================
+   HAMZA ADVANCED — ADVERTISING SUB-BRAND STYLESHEET
+   Yellow-accented sub-site for the advertising sector. Inherits the parent
+   design system (tokens, type, glass primitives) and only overrides:
+     • the accent triplet (--accent, --accent-soft, --accent-deep)
+     • the accent-on-yellow contrast (dark ink on yellow)
+     • component-scoped class names prefixed with .ad-
+   Structural primitives, motion curves, and the layout grid match the main
+   Hamza Advanced homepage 1:1 — only the chromatic identity changes.
+   ========================================================================== */
+
+/* ---------- 1. SCOPE & PALETTE OVERRIDES ----------------------------------- */
+.ad-scope {
+  /* Advertising palette (sourced from /public/advertising/logos & patterns) */
+  --ad-yellow: #FEFC4F;
+  /* primary signage yellow */
+  --ad-yellow-soft: #FFFE99;
+  /* hover wash */
+  --ad-yellow-deep: #D6D43F;
+  /* pressed / dark surfaces */
+  --ad-yellow-glow: rgba(254, 252, 79, 0.35);
+
+  /* Override the shared --accent tokens for everything inside .ad-scope */
+  --accent: var(--ad-yellow);
+  --accent-soft: var(--ad-yellow-soft);
+  --accent-deep: var(--ad-yellow-deep);
+  --accent-contrast: #0B1220;
+  /* dark ink reads cleanly on yellow */
+
+  /* Ink palette mirrors parent — kept here to avoid leakage */
+  --ad-ink: #0B1220;
+  --ad-ink-2: #111A2E;
+  --ad-cream: #F7F0F5;
+
+  color: var(--ad-cream);
+  background: var(--ad-ink);
+  /* Lock the sub-site to VIP Hakm (Thin / Regular / Bold only) — no Hala. */
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+}
+
+.ad-scope,
+.ad-scope * {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+}
+
+/* The triangular petal pattern (Pattern 1.png) is the brand's signature motif.
+   We use it as a low-opacity overlay on hero / CTA sections only — never as a
+   full-page tile (would visually crush the dark glass surfaces below). */
+.ad-pattern-bg {
+  position: relative;
+}
+
+.ad-pattern-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #0B1220 0%, rgba(11, 18, 32, 0.5) 50%, #0B1220 100%), url('/advertising/patterns/Pattern 3.png');
+  background-size: 1800px auto;
+  background-repeat: invert;
+  opacity: 0.1;
+  mix-blend-mode: invert;
+  z-index: 0;
+}
+
+.ad-pattern-bg>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 2. NAVBAR ------------------------------------------------------- */
+.ad-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  background: rgba(11, 18, 32, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(4px);
+  border-bottom: 1px solid #FEFC4F10;
+  transition: background var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.ad-nav.is-scrolled {
+  background: rgba(11, 18, 32, 0.5);
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
+  border-bottom-color: rgba(254, 252, 79, 0.18);
+}
+
+.ad-nav__inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.ad-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ad-nav__brand img {
+  height: 44px;
+  width: auto;
+  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ad-nav__brand img:hover {
+  filter: brightness(10);
+}
+
+.ad-nav__brand-sub {
+  font-size: 0.72rem;
+  color: var(--ad-yellow);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.ad-nav__links {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (min-width: 1024px) {
+  .ad-nav__links {
+    display: inline-flex;
+  }
+}
+
+.ad-nav__link {
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(247, 240, 245, 0.78);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ad-nav__link:hover {
+  color: var(--ad-yellow);
+}
+
+.ad-nav__back {
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.55);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(247, 240, 245, 0.10);
+  transition: all 0.3s ease;
+}
+
+.ad-nav__back:hover {
+  color: var(--ad-cream);
+  border-color: rgba(247, 240, 245, 0.25);
+}
+
+.ad-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  font-weight: 700;
+  font-size: 0.86rem;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 12px var(--ad-yellow-glow);
+  border: 1.5px solid var(--ad-yellow);
+}
+
+.ad-nav__cta:hover {
+  background: rgba(254, 252, 79, 0.075);
+  color: var(--ad-yellow);
+  border: 1.5px solid var(--ad-yellow);
+  box-shadow: 0 0 12px var(--ad-yellow-glow);
+}
+
+.ad-nav__cta svg {
+  transform: scale(-1);
+}
+
+.ad-nav__mobile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(254, 252, 79, 0.15);
+  border-radius: 12px;
+  color: var(--ad-yellow);
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .ad-nav__mobile-btn {
+    display: none;
+  }
+}
+
+.ad-nav__drawer {
+  position: fixed;
+  top: 76px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100vh - 76px);
+  background: rgba(11, 18, 32, 0.98);
+  border-top: 1px solid rgba(254, 252, 79, 0.10);
+  padding: 2rem clamp(1rem, 4vw, 2.5rem) 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.ad-nav__drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ad-nav__drawer-links a,
+.ad-nav__drawer-links button {
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  text-align: start;
+  color: rgba(247, 240, 245, 0.85);
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  transition: all 0.3s ease;
+}
+
+.ad-nav__drawer-links a:hover,
+.ad-nav__drawer-links button:hover {
+  background: rgba(254, 252, 79, 0.08);
+  color: var(--ad-yellow);
+}
+
+.ad-nav__drawer-divider {
+  height: 1px;
+  background: rgba(254, 252, 79, 0.10);
+  margin: 1.5rem 0;
+}
+
+.ad-nav__drawer-buttons {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.ad-nav__drawer-buttons .ad-nav__back,
+.ad-nav__drawer-buttons .ad-nav__cta {
+  font-size: 0.7rem;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- 3. HERO --------------------------------------------------------- */
+.ad-hero {
+  position: relative;
+  min-height: clamp(640px, 88vh, 920px);
+  padding-top: 120px;
+  padding-bottom: 80px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #0B1220;
+}
+
+.ad-hero__video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(11, 18, 32, 0.0) -50%, #0B1220 97.5%);
+}
+
+.ad-hero__background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.23;
+}
+
+.video-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ad-hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .ad-hero__inner {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.ad-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(254, 252, 79, 0.25);
+  background: rgba(254, 252, 79, 0.05);
+  color: var(--ad-yellow);
+  font-size: 0.78rem;
+  letter-spacing: 0.10em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.ad-hero__eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ad-yellow);
+  box-shadow: 0 0 12px var(--ad-yellow);
+}
+
+.ad-hero__heading {
+  font-family: 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--ad-cream);
+  margin: 1.25rem 0 1rem;
+}
+
+.ad-hero__heading .ad-hl {
+  color: var(--ad-yellow);
+  display: inline-block;
+  position: relative;
+  line-height: 1.2;
+}
+
+.ad-hero__body {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.72);
+  max-width: 520px;
+  margin-bottom: 2rem;
+}
+
+.ad-hero__cta-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ad-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+}
+
+.ad-btn--primary {
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  border: 1px solid var(--ad-yellow);
+  box-shadow: 0 10px 30px -8px var(--ad-yellow-glow), 0 0 0 0 rgba(254, 252, 79, 0);
+}
+
+/* Hover: outlined — yellow border, yellow text, no fill, amplified glow, no
+   transform. Preserves the static state above 1:1. */
+.ad-btn--primary:hover {
+  background: transparent;
+  color: var(--ad-yellow);
+  border-color: var(--ad-yellow);
+  box-shadow:
+    0 0 38px 4px var(--ad-yellow-glow),
+    0 0 0 7px rgba(254, 252, 79, 0.12),
+    inset 0 0 18px rgba(254, 252, 79, 0.20);
+  transform: none;
+}
+
+.ad-btn--ghost {
+  background: rgba(247, 240, 245, 0.04);
+  color: var(--ad-cream);
+  border-color: rgba(247, 240, 245, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.ad-btn--ghost:hover {
+  background: rgba(247, 240, 245, 0.10);
+  border-color: rgba(254, 252, 79, 0.50);
+  color: var(--ad-yellow);
+}
+
+.ad-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Hero side visual — stacked print mockups + glowing yellow halo */
+.ad-hero__visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  max-width: 520px;
+  margin-inline: auto;
+  isolation: isolate;
+}
+
+.ad-hero__visual::before {
+  content: '';
+  position: absolute;
+  inset: 18% 14% 12% 14%;
+  background: radial-gradient(circle at 50% 50%, var(--ad-yellow-glow), transparent 65%);
+  filter: blur(40px);
+  z-index: -1;
+}
+
+.ad-hero__card {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(26, 37, 64, 0.55), rgba(11, 18, 32, 0.85));
+  border: 1px solid rgba(254, 252, 79, 0.18);
+  border-top: 1px solid rgba(254, 252, 79, 0.30);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(20px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ad-hero__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ad-hero__card--a {
+  top: 0;
+  right: 0;
+  width: 64%;
+  aspect-ratio: 4/5;
+  transform: rotate(2deg);
+}
+
+.ad-hero__card--b {
+  bottom: 4%;
+  left: 0;
+  width: 60%;
+  aspect-ratio: 4/3;
+  transform: rotate(-4deg);
+}
+
+.ad-hero__card--c {
+  top: 38%;
+  left: 28%;
+  width: 44%;
+  aspect-ratio: 1/1;
+  transform: rotate(8deg);
+}
+
+.ad-hero__visual:hover .ad-hero__card--a {
+  transform: rotate(0deg) translateY(-6px);
+}
+
+.ad-hero__visual:hover .ad-hero__card--b {
+  transform: rotate(-2deg) translateY(-6px);
+}
+
+.ad-hero__visual:hover .ad-hero__card--c {
+  transform: rotate(4deg) translateY(-6px);
+}
+
+.ad-hero__stats {
+  margin-top: 2.4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem 1.25rem;
+  max-width: 580px;
+}
+
+.ad-hero__stat {
+  border-inline-start: 2px solid var(--ad-yellow);
+  padding-inline-start: 0.85rem;
+}
+
+.ad-hero__stat-num {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--ad-cream);
+  line-height: 1.1;
+}
+
+.ad-hero__stat-lbl {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.55);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- 4. SECTION CHROME ---------------------------------------------- */
+.ad-section {
+  position: relative;
+  padding: clamp(72px, 10vw, 130px) 0;
+}
+
+.ad-section__inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+.ad-section__head {
+  text-align: center;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.black {
+  z-index: 0;
+  background-color: linear-gradient(180deg, #0B1220 0%, rgba(11, 18, 32, 0.00) 50%, #0B1220 100%);
+  ;
+}
+
+.ad-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  color: var(--ad-yellow);
+  text-transform: uppercase;
+}
+
+.ad-eyebrow::before,
+.ad-eyebrow::after {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: rgba(254, 252, 79, 0.5);
+}
+
+.ad-h2 {
+  font-family: 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--ad-cream);
+  margin: 0.85rem 0 0.85rem;
+}
+
+.ad-h2 .ad-hl {
+  color: var(--ad-yellow);
+  text-shadow: 0 0 28px rgba(254, 252, 79, 0.75);
+}
+
+.ad-lede {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.7);
+  margin: 0 auto;
+}
+
+/* ---------- 5. PILLARS (Vision / Mission / Goal) --------------------------- */
+.ad-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .ad-pillars {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ad-pillar {
+  background: linear-gradient(135deg, rgba(26, 37, 64, 0.01), rgba(11, 18, 32, 0.5));
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-top: 1px solid rgba(247, 240, 245, 0.16);
+  border-radius: 22px;
+  padding: 2rem 1.85rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  isolation: isolate;
+}
+
+.ad-pillar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% -10%, var(--ad-yellow-glow), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  z-index: -1;
+}
+
+.ad-pillar:hover {
+  transform: translateY(-6px);
+  border-color: rgba(254, 252, 79, 0.35);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(254, 252, 79, 0.12);
+}
+
+.ad-pillar:hover::before {
+  opacity: 1;
+}
+
+.ad-pillar__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(254, 252, 79, 0.10);
+  color: var(--ad-yellow);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.ad-pillar__label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ad-yellow);
+  box-shadow: 0 0 10px var(--ad-yellow);
+}
+
+.ad-pillar__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 1.4rem;
+  color: var(--ad-cream);
+  margin-bottom: 0.85rem;
+  line-height: 1.25;
+}
+
+.ad-pillar__body {
+  font-size: 0.96rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.72);
+}
+
+/* ---------- 6. SERVICES CAROUSEL ------------------------------------------ */
+
+/* ── Carousel container (Testimonials-style stacked layout) ── */
+.ad-svc-carousel {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ad-svc-carousel:active {
+  cursor: grabbing;
+}
+
+/* ── Individual card ── */
+.ad-svc-card {
+  position: absolute;
+  width: clamp(300px, 28vw, 420px);
+  height: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  direction: rtl;
+  will-change: transform, opacity, filter;
+
+  /* Testimonials-style glass card */
+  border-radius: 24px;
+  background: linear-gradient(165deg, #0B1220 0%, #16233F 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Active card border accent */
+.ad-svc-card.is-active {
+  border-color: rgba(254, 252, 79, 0.20);
+}
+
+/* ── Hover background image ── */
+.ad-svc-card__img-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.33;
+  transition: opacity 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  filter: saturate(0);
+}
+
+.ad-svc-card.is-img-visible .ad-svc-card__img-wrap {
+  opacity: 1;
+  filter: saturate(1);
+}
+
+.ad-svc-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dark overlay to keep text readable */
+.ad-svc-card__img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(11, 18, 32, 0.10) 0%,
+      rgba(11, 18, 32, 0.5) 30%,
+      rgba(11, 18, 32, 0.9) 75%,
+      rgba(11, 18, 32, 1) 100%);
+  pointer-events: none;
+}
+
+/* ── Card content — pushed to bottom, all centered ── */
+.ad-svc-card__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.65rem;
+  padding: 2rem 1.75rem 2.5rem;
+  width: 100%;
+}
+
+/* Icon plate — centered */
+.ad-svc-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(254, 252, 79, 0.10);
+  color: var(--ad-yellow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.45s ease;
+  border: 1px solid rgba(254, 252, 79, 0.18);
+  margin-bottom: 0.35rem;
+}
+
+.ad-svc-card.is-active:hover .ad-svc-card__icon {
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  box-shadow: 0 0 28px var(--ad-yellow-glow);
+}
+
+/* Title */
+.ad-svc-card__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 1.3rem;
+  color: var(--ad-cream);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Short tagline */
+.ad-svc-card__short {
+  font-size: 0.85rem;
+  color: var(--ad-yellow);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* Body text */
+.ad-svc-card__body {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: rgba(247, 240, 245, 0.65);
+  margin: 0;
+  max-width: 340px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ad-svc-carousel {
+    height: 600px;
+  }
+
+  .ad-svc-card {
+    width: clamp(260px, 65vw, 340px);
+    height: 560px;
+  }
+
+  .ad-svc-card__content {
+    padding: 1.5rem 1.25rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-svc-carousel {
+    height: 520px;
+  }
+
+  .ad-svc-card {
+    width: clamp(240px, 75vw, 300px);
+    height: 480px;
+  }
+}
+
+/* ---------- 7. PROMISE STATS (4 cards) ------------------------------------ */
+.ad-promise {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .ad-promise {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ad-promise {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ad-promise__card {
+  background: linear-gradient(180deg, rgba(254, 252, 79, 0.04), transparent 50%), rgba(17, 26, 46, 0.5);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-radius: 20px;
+  padding: 1.85rem 1.5rem;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-promise__card:hover {
+  border-color: rgba(254, 252, 79, 0.40);
+  transform: translateY(-4px);
+  background: linear-gradient(180deg, rgba(254, 252, 79, 0.08), transparent 50%), rgba(17, 26, 46, 0.65);
+}
+
+.ad-promise__stat {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--ad-yellow);
+  line-height: 1;
+  margin-bottom: 0.55rem;
+  letter-spacing: -0.02em;
+}
+
+.ad-promise__stat-lbl {
+  font-size: 0.75rem;
+  color: rgba(247, 240, 245, 0.5);
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.ad-promise__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ad-cream);
+  margin-bottom: 0.55rem;
+}
+
+.ad-promise__body {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.65);
+}
+
+/* ---------- 8. PROCESS TIMELINE ------------------------------------------- */
+.ad-process {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  position: relative;
+}
+
+.ad-bg {
+  background:
+    linear-gradient(180deg, #0B1220 0%, rgba(11, 18, 32, 0.8) 50%, #0B1220 97.5%),
+    url('/advertising/process/advertising.jpg');
+  background-size: 2000px;
+  background-position-x: 50%;
+  background-position-y: 60%;
+}
+
+@media (min-width: 768px) {
+  .ad-process {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ad-process__step {
+  position: relative;
+  background: rgba(17, 26, 46, 0.25);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-radius: 20px;
+  padding: 2rem 1.5rem 1.75rem;
+  transition: all 0.5s ease;
+  backdrop-filter: blur(10px);
+}
+
+.ad-process__step::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: -1px;
+  inset-inline-end: -1px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--ad-yellow) 50%, transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 20px 20px 0 0;
+}
+
+.ad-process__step:hover {
+  border-color: rgba(254, 252, 79, 0.35);
+  transform: translateY(-4px);
+  background: rgba(17, 26, 46, 0.78);
+}
+
+.ad-process__step:hover::before {
+  opacity: 1;
+}
+
+.ad-process__n {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 2.6rem;
+  color: rgba(254, 252, 79, 0.20);
+  line-height: 1;
+  margin-bottom: 0.55rem;
+  font-weight: 700;
+  transition: color 0.4s ease;
+}
+
+.ad-process__step:hover .ad-process__n {
+  color: var(--ad-yellow);
+}
+
+.ad-process__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ad-cream);
+  margin-bottom: 0.6rem;
+}
+
+.ad-process__body {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.65);
+}
+
+/* ---------- 9. SHOWCASE BENTO (featured tiles) ---------------------------- */
+.ad-showcase {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .ad-showcase {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ad-showcase {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ad-show {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  cursor: pointer;
+  background: var(--ad-ink-2);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ad-show__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.55s ease;
+  filter: brightness(0.7) saturate(0%);
+}
+
+.ad-show::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(11, 18, 32, 0.85) 75%, var(--ad-ink) 100%);
+  pointer-events: none;
+}
+
+.ad-show__tag {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  z-index: 2;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.ad-show__caption {
+  position: absolute;
+  inset: auto 1.5rem 1.5rem 1.5rem;
+  z-index: 2;
+}
+
+.ad-show__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ad-cream);
+  margin-bottom: 0.35rem;
+  line-height: 1.25;
+}
+
+.ad-show__desc {
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: rgba(247, 240, 245, 0.75);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.55s ease;
+}
+
+.ad-show:hover {
+  transform: translateY(-6px);
+  border-color: rgba(254, 252, 79, 0.40);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 40px rgba(214, 212, 63, 0.25);
+}
+
+.ad-show:hover .ad-show__img {
+  transform: scale(1.08);
+  filter: brightness(0.55) saturate(1.2);
+}
+
+.ad-show:hover .ad-show__desc {
+  max-height: 100px;
+  opacity: 1;
+  margin-top: 0.5rem;
+}
+
+/* ---------- 10. CLIENTS — categorized cards (post-launch refactor) -------- */
+.ad-clients__summary {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(254, 252, 79, 0.06);
+  border: 1px solid rgba(254, 252, 79, 0.22);
+}
+.ad-clients__summary-num {
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ad-yellow);
+  text-shadow: 0 0 18px rgba(254, 252, 79, 0.45);
+}
+.ad-clients__summary-lbl {
+  font-size: 0.84rem;
+  color: rgba(247, 240, 245, 0.7);
+  font-weight: 600;
+}
+.ad-clients__summary-lbl strong { color: var(--ad-cream); font-weight: 800; }
+
+.ad-clients-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+@media (min-width: 640px)  { .ad-clients-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .ad-clients-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1400px) { .ad-clients-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.ad-clients-cat {
+  position: relative;
+  background:
+    radial-gradient(circle at 85% -20%, rgba(254, 252, 79, 0.07), transparent 60%),
+    linear-gradient(165deg, rgba(26, 37, 64, 0.55), rgba(11, 18, 32, 0.85));
+  border: 1px solid rgba(247, 240, 245, 0.07);
+  border-top: 1px solid rgba(247, 240, 245, 0.14);
+  border-radius: 20px;
+  padding: 1.4rem 1.35rem 1.3rem;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ad-clients-cat::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ad-yellow) 50%, transparent);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.ad-clients-cat:hover {
+  border-color: rgba(254, 252, 79, 0.40);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.55),
+              0 0 24px -10px var(--ad-yellow-glow);
+}
+.ad-clients-cat:hover::before { opacity: 1; }
+
+.ad-clients-cat__head {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(247, 240, 245, 0.10);
+}
+.ad-clients-cat__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(254, 252, 79, 0.10);
+  border: 1px solid rgba(254, 252, 79, 0.26);
+  color: var(--ad-yellow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.4s ease;
+}
+.ad-clients-cat:hover .ad-clients-cat__icon {
+  background: var(--ad-yellow);
+  color: var(--ad-ink);
+  box-shadow: 0 0 22px var(--ad-yellow-glow);
+}
+.ad-clients-cat__head-body { min-width: 0; }
+.ad-clients-cat__eyebrow {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ad-yellow);
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+.ad-clients-cat__title {
+  font-family: 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ad-cream);
+  margin: 0;
+  line-height: 1.25;
+}
+.ad-clients-cat__blurb {
+  margin: 0.4rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.55);
+  line-height: 1.6;
+}
+.ad-clients-cat__count {
+  flex-shrink: 0;
+  align-self: center;
+  font-family: 'VIP Hakm', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ad-yellow);
+  background: rgba(254, 252, 79, 0.08);
+  border: 1px solid rgba(254, 252, 79, 0.28);
+  border-radius: 999px;
+  padding: 0.28rem 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.ad-clients-cat__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.ad-client-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(247, 240, 245, 0.025);
+  border: 1px solid rgba(247, 240, 245, 0.05);
+  transition: all 0.3s ease;
+}
+.ad-client-chip:hover {
+  background: rgba(254, 252, 79, 0.07);
+  border-color: rgba(254, 252, 79, 0.30);
+}
+.ad-client-chip__dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(254, 252, 79, 0.4);
+  transition: all 0.3s ease;
+}
+.ad-client-chip:hover .ad-client-chip__dot {
+  background: var(--ad-yellow);
+  box-shadow: 0 0 8px var(--ad-yellow);
+}
+.ad-client-chip__name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: rgba(247, 240, 245, 0.85);
+  line-height: 1.4;
+}
+
+/* Legacy .ad-client (single-tile) kept as a fallback in case it's used
+   elsewhere, but the new categorized grid is the canonical surface. */
+.ad-clients {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+}
+@media (min-width: 640px)  { .ad-clients { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .ad-clients { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1280px) { .ad-clients { grid-template-columns: repeat(6, 1fr); } }
+.ad-client {
+  position: relative;
+  background: rgba(17, 26, 46, 0.42);
+  border: 1px solid rgba(247, 240, 245, 0.06);
+  border-radius: 14px;
+  padding: 1rem 0.85rem;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(247, 240, 245, 0.78);
+  transition: all 0.35s ease;
+  cursor: default;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.ad-client__seg {
+  font-size: 0.66rem;
+  color: rgba(254, 252, 79, 0.65);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.ad-client:hover {
+  border-color: rgba(254, 252, 79, 0.40);
+  background: rgba(254, 252, 79, 0.05);
+  color: var(--ad-cream);
+  transform: translateY(-2px);
+}
+
+/* ---------- 11. CTA BANNER ------------------------------------------------ */
+.ad-cta {
+  position: relative;
+  border-radius: 28px;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(254, 252, 79, 0.18), transparent 50%),
+    linear-gradient(135deg, rgba(254, 252, 79, 0.05), rgba(17, 26, 46, 0.90));
+  border: 2.5px solid rgba(254, 252, 79, 0.25);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  isolation: isolate;
+}
+
+@media (min-width: 992px) {
+  .ad-cta {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.ad-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/advertising/patterns/Pattern 5.png');
+  background-size: 1400px auto;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.ad-cta__title {
+  font-family: 'VIP Hakm', sans-serif;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  color: var(--ad-cream);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.ad-cta__title .ad-hl {
+  color: var(--ad-yellow);
+  text-shadow: 0 0 20px rgba(254, 252, 79, 0.75);
+}
+
+.ad-cta__body {
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.78);
+}
+
+.ad-cta__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.ad-cta__contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.1rem;
+  background: rgba(11, 18, 32, 0.5);
+  border: 1px solid rgba(254, 252, 79, 0.15);
+  border-radius: 14px;
+  color: var(--ad-cream);
+  font-size: 0.92rem;
+  transition: all 0.35s ease;
+}
+
+.ad-cta__contact-item:hover {
+  border-color: var(--ad-yellow);
+  background: rgba(11, 18, 32, 0.75);
+  transform: translateX(-3px);
+}
+
+.ad-cta__contact-item svg {
+  flex-shrink: 0;
+  color: var(--ad-yellow);
+  text-shadow: 0 0 12px var(--ad-yellow-glow);
+}
+
+.ad-cta__contact-label {
+  font-size: 0.68rem;
+  color: rgba(247, 240, 245, 0.45);
+  letter-spacing: 0.06em;
+  display: block;
+}
+
+/* ---------- 12. FOOTER ---------------------------------------------------- */
+.ad-footer {
+  position: relative;
+  background: linear-gradient(180deg, var(--ad-ink), #060A14);
+  border-top: 1px solid rgba(254, 252, 79, 0.10);
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.ad-footer::before {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  inset-inline-start: 50%;
+  width: 800px;
+  height: 800px;
+  background-image: url('/advertising/logos/Monogram Full Yellow.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.075;
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: blur(12px) saturate(150%);
+  transition: filter 1s ease;
+}
+
+.ad-footer__inner {
+  position: relative;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+.ad-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ad-footer__grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  }
+}
+
+.ad-footer__brand img {
+  height: 60px;
+  width: auto;
+  margin-bottom: 1rem;
+}
+
+.ad-footer__desc {
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.55);
+  max-width: 320px;
+  margin-bottom: 1.25rem;
+}
+
+.ad-footer__socials {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.ad-footer__social {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(247, 240, 245, 0.05);
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  color: rgba(247, 240, 245, 0.65);
+  transition: all 0.3s ease;
+}
+
+.ad-footer__social:hover {
+  background: var(--ad-yellow);
+  border-color: var(--ad-yellow);
+  color: var(--ad-ink);
+  transform: translateY(-3px);
+}
+
+.ad-footer__col-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ad-cream);
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ad-footer__col-title::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ad-yellow);
+  box-shadow: 0 0 8px var(--ad-yellow);
+  text-shadow: 0 0 20px rgba(254, 252, 79, 0.75);
+}
+
+.ad-footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ad-footer__link {
+  font-size: 0.88rem;
+  color: rgba(247, 240, 245, 0.65);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ad-footer__link:hover {
+  color: var(--ad-yellow);
+  text-shadow: 0 0 12px rgba(254, 252, 79, 0.75);
+}
+
+.ad-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.45);
+}
+
+.ad-footer__bottom-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.ad-footer__bottom a {
+  transition: color 0.5s ease;
+}
+
+.ad-footer__bottom a:hover {
+  color: var(--ad-yellow);
+  text-shadow: 0 0 12px rgba(254, 252, 79, 0.75);
+}
+
+/* ---------- 13. RTL & RESPONSIVE TWEAKS ----------------------------------- */
+[dir='rtl'] .ad-show__tag,
+[dir='rtl'] .ad-nav__cta svg {
+  /* mirrored arrows handled in JSX */
+}
+
+@media (max-width: 768px) {
+  .ad-hero {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+
+  .ad-hero__inner {
+    gap: 2.5rem;
+  }
+
+  .ad-hero__visual {
+    max-width: 360px;
+  }
+
+  .ad-hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Float animation for the hero monogram echo */
+@keyframes ad-float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+}
+
+.ad-hero__visual {
+  animation: ad-float 9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-hero__visual {
+    animation: none;
+  }
+}

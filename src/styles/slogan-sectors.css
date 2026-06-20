@@ -1,0 +1,584 @@
+/* =============================================================================
+   SLOGAN SECTORS — Scroll-snap sector showcase
+   ========================================================================== */
+
+/* ── Section wrapper ─────────────────────────────────────────────────────── */
+.slogan-sectors {
+  position: relative;
+  width: 100%;
+  background: var(--ink);
+}
+
+/* Tall spacer creates the scrollable area that "locks" the viewport */
+.slogan-sectors__scroll-spacer {
+  height: calc(100vh * 4);
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .slogan-sectors__scroll-spacer {
+    height: calc(100vh * 6);
+  }
+}
+
+/* Sticky inner — pins the actual content to the viewport */
+.slogan-sectors__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.slogan-sectors__inner {
+  width: 100%;
+  max-width: 1280px;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 4vh clamp(1.25rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3vh;
+}
+
+/* ── Header (static / fixed) ─────────────────────────────────────────────── */
+.slogan-sectors__header {
+  text-align: center;
+  margin-top: 0;
+}
+
+.slogan-sectors__eyebrow {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--emerald);
+  letter-spacing: 0.04em;
+  margin: 0 0 10px 0;
+  text-shadow: 0px 0px 12px var(--emerald);
+}
+
+.slogan-sectors__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35em;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.slogan-sectors__heading-line1 {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 400;
+  color: var(--cream);
+}
+
+.slogan-sectors__heading-accent {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-soft));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.slogan-sectors__subheading {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1.15rem, 2.5vw, 1.65rem);
+  font-weight: 700;
+  color: var(--cream);
+  margin: 0 0 8px 0;
+  opacity: 0.9;
+}
+
+.slogan-sectors__body {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.32);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ── Sector details sub-section ──────────────────────────────────────────── */
+/* Layout: [nav dots] [image] [info panel]
+   In RTL with direction rtl on the section:
+   Visual order (LTR): nav-dots | image | info
+   The grid is laid out in LTR (direction: ltr) to ensure correct visual
+   placement matching the reference images (dots far-left, image center-left,
+   info right side) */
+.slogan-sectors__details {
+  display: grid;
+  grid-template-columns: 48px 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  height: 60vh;
+  min-height: 380px;
+  max-height: 600px;
+  position: relative;
+  direction: ltr;
+  /* Force LTR for grid column placement */
+}
+
+/* ── Vertical nav dots (far left) ────────────────────────────────────────── */
+.slogan-sectors__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 0;
+  z-index: 5;
+}
+
+.slogan-sectors__nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(247, 240, 245, 0.15);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0;
+  position: relative;
+}
+
+.slogan-sectors__nav-dot:hover {
+  border-color: rgba(247, 240, 245, 0.4);
+  transform: scale(1.15);
+}
+
+.slogan-sectors__nav-dot.is-active {
+  background: var(--dot-color);
+  border-color: var(--dot-color);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--dot-color) 50%, transparent),
+    0 0 24px color-mix(in srgb, var(--dot-color) 20%, transparent);
+  transform: scale(1.2);
+}
+
+/* ── Image side (center-left visually) ───────────────────────────────────── */
+.slogan-sectors__image-side {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  height: 100%;
+}
+
+.slogan-sectors__image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slogan-sectors__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Gradient overlay — from accent color on the BOTTOM edge to transparent on TOP (50%) */
+.slogan-sectors__image-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Legend pill (top-right of image container) */
+.slogan-sectors__image-legend {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  background: rgba(11, 18, 32, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  direction: rtl;
+  /* Force RTL for Arabic text */
+}
+
+.slogan-sectors__image-legend:hover {
+  transform: scale(1.025);
+  transition: transform 0.5s ease;
+  /* transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1); */
+  background-color: #0E192D;
+}
+
+.slogan-sectors__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.slogan-sectors__legend-text {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cream);
+  white-space: nowrap;
+}
+
+/* Large sector icon partially visible (bottom-left, cropped by container) */
+.slogan-sectors__image-icon-wrap {
+  position: absolute;
+  bottom: -19%;
+  left: -19%;
+  width: 60%;
+  height: 60%;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.slogan-sectors__image-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.5));
+}
+
+/* ── Info side (right panel visually) ────────────────────────────────────── */
+.slogan-sectors__info-side {
+  display: flex;
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-left: none;
+  direction: rtl;
+  /* Force RTL for Arabic content */
+}
+
+.slogan-sectors__info-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Sector badge (icon + name) */
+.slogan-sectors__sector-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.slogan-sectors__sector-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.slogan-sectors__sector-name {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/* Slogan: "عالم من" + dynamic word */
+.slogan-sectors__slogan {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.slogan-sectors__slogan-prefix {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: clamp(1.35rem, 2vw, 1.5rem);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.75;
+}
+
+.slogan-sectors__slogan-word {
+  font-family: 'VIP Hala', 'VIP Hakm', 'Cairo', sans-serif;
+  font-size: clamp(3rem, 4vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  display: block;
+  letter-spacing: 0.02em;
+}
+
+/* Description */
+.slogan-sectors__description {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.4);
+  margin: 0 0 18px 0;
+  max-width: 450px;
+}
+
+/* Services list */
+.slogan-sectors__services {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slogan-sectors__service-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: rgba(247, 240, 245, 0.7);
+  line-height: 1.4;
+}
+
+.slogan-sectors__check {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .slogan-sectors__details {
+    grid-template-columns: 40px 1fr 1fr;
+  }
+
+  .slogan-sectors__image-side {
+    min-height: 340px;
+  }
+
+  .slogan-sectors__image-container,
+  .slogan-sectors__image {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slogan-sectors__details {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 0;
+    direction: rtl;
+    /* Revert to RTL for stacked mobile layout */
+  }
+
+  .slogan-sectors__nav {
+    flex-direction: row;
+    justify-content: center;
+    order: 3;
+    padding: 16px 0 0;
+    gap: 12px;
+  }
+
+  .slogan-sectors__image-side {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    min-height: 260px;
+    order: 1;
+  }
+
+  .slogan-sectors__image-container,
+  .slogan-sectors__image {
+    min-height: 260px;
+  }
+
+  .slogan-sectors__info-side {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+    order: 2;
+  }
+
+  .slogan-sectors__scroll-spacer {
+    height: calc(100vh * 6);
+  }
+
+  .slogan-sectors__heading {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .slogan-sectors__slogan-word {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .slogan-sectors__inner {
+    height: 100dvh !important;
+    height: 100svh !important;
+    padding: 2.5vh 12px 1.5vh !important;
+    gap: 1vh !important;
+    justify-content: space-between !important;
+  }
+
+  .slogan-sectors__header {
+    margin-bottom: 0 !important;
+  }
+
+  .slogan-sectors__eyebrow {
+    display: none !important;
+    /* Hide eyebrow to fit the whole screen */
+  }
+
+  .slogan-sectors__heading {
+    margin-bottom: 0 !important;
+  }
+
+  .slogan-sectors__heading-line1,
+  .slogan-sectors__heading-accent {
+    font-size: 1.25rem !important;
+  }
+
+  .slogan-sectors__subheading {
+    font-size: 0.85rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .slogan-sectors__body {
+    display: none !important;
+    /* Hide body text to fit the whole screen */
+  }
+
+  .slogan-sectors__details {
+    height: auto !important;
+    min-height: unset !important;
+    max-height: unset !important;
+    grid-template-rows: auto auto !important;
+    gap: 1.5vh !important;
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  .slogan-sectors__image-side {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+    min-height: 120px !important;
+    height: 120px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .slogan-sectors__image-container,
+  .slogan-sectors__image {
+    min-height: 120px !important;
+    height: 120px !important;
+  }
+
+  .slogan-sectors__image-legend {
+    top: 8px !important;
+    right: 8px !important;
+    padding: 4px 10px !important;
+  }
+
+  .slogan-sectors__legend-text {
+    font-size: 0.625rem !important;
+  }
+
+  .slogan-sectors__image-icon-wrap {
+    width: 28% !important;
+    height: 28% !important;
+    bottom: -3% !important;
+    left: -3% !important;
+  }
+
+  .slogan-sectors__info-side {
+    padding: 12px 14px !important;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.04) !important;
+    flex-grow: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .slogan-sectors__info-content {
+    gap: 6px !important;
+  }
+
+  .slogan-sectors__sector-badge {
+    margin-bottom: 2px !important;
+    gap: 6px !important;
+  }
+
+  .slogan-sectors__sector-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .slogan-sectors__sector-badge div {
+    height: 28px !important;
+    width: 28px !important;
+  }
+
+  .slogan-sectors__sector-name {
+    font-size: 0.8rem !important;
+  }
+
+  .slogan-sectors__slogan {
+    margin-bottom: 2px !important;
+    gap: 0px !important;
+  }
+
+  .slogan-sectors__slogan-prefix {
+    font-size: 0.75rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .slogan-sectors__slogan-word {
+    font-size: 1.4rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .slogan-sectors__description {
+    font-size: 0.68rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .slogan-sectors__services {
+    gap: 4px !important;
+  }
+
+  .slogan-sectors__service-item {
+    font-size: 0.68rem !important;
+    gap: 6px !important;
+  }
+
+  .slogan-sectors__service-item:nth-child(n+4) {
+    display: none !important;
+    /* Hide 4th and 5th items to fit screen perfectly on mobile L */
+  }
+
+  .slogan-sectors__check {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .slogan-sectors__nav {
+    padding: 8px 0 0 !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .slogan-sectors__nav-dot {
+    width: 8px !important;
+    height: 8px !important;
+  }
+}

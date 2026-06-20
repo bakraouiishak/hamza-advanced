@@ -1,0 +1,1264 @@
+/* =============================================================================
+   HAMZA ADVANCED — ELECTRICITY SUB-BRAND STYLESHEET
+   Electric-blue / dark-navy sub-site for the electricity sector. Inherits the
+   parent design system (tokens, motion, glass primitives) and only overrides:
+     • the accent triplet (--accent, --accent-soft, --accent-deep)
+     • component-scoped class names prefixed with .el-
+   Brand identity sources: /public/electricity/{Horizontal Logo.svg,
+   Logo Mark.svg, grid.png, pattern.png}.
+   ========================================================================== */
+
+/* ---------- 1. SCOPE & PALETTE OVERRIDES ----------------------------------- */
+.el-scope {
+  --el-blue: #008CFF;
+  --el-blue-soft: #4DA8FF;
+  --el-blue-deep: #0066C7;
+  --el-blue-glow: rgba(0, 140, 255, 0.35);
+
+  --accent: var(--el-blue);
+  --accent-soft: var(--el-blue-soft);
+  --accent-deep: var(--el-blue-deep);
+  --accent-contrast: #0A1224;
+
+  --el-ink: #0A1224;
+  --el-ink-2: #0F1A33;
+  --el-cream: #F7F0F5;
+
+  color: var(--el-cream);
+  background: var(--el-ink);
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+}
+
+.el-scope,
+.el-scope * {
+  font-family: 'VIP Hakm', 'Tajawal', system-ui, sans-serif;
+}
+
+/* Identity pattern overlay — barely visible, sits behind gradients. */
+.el-pattern-bg {
+  position: relative;
+}
+
+.el-pattern-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, var(--el-ink) 0%, rgba(10, 18, 36, 0.75) 50%, var(--el-ink) 100%),
+    url('/electricity/pattern.png');
+  background-size: auto, 1400px auto;
+  background-repeat: no-repeat, repeat;
+  opacity: 0.55;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.el-pattern-bg>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Grid overlay — for hero & CTA only. */
+.el-grid-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/electricity/grid.png');
+  background-size: 540px auto;
+  background-repeat: repeat;
+  opacity: 0.07;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- 2. NAVBAR ------------------------------------------------------- */
+.el-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  background: rgba(10, 18, 36, 0.20);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 140, 255, 0.12);
+  transition: background var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.el-nav.is-scrolled {
+  background: rgba(10, 18, 36, 0.88);
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.55);
+  border-bottom-color: rgba(0, 140, 255, 0.22);
+}
+
+.el-nav__inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.el-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.el-nav__brand img {
+  height: 44px;
+  width: auto;
+}
+
+.el-nav__links {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (min-width: 1024px) {
+  .el-nav__links {
+    display: inline-flex;
+  }
+}
+
+.el-nav__link {
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(247, 240, 245, 0.78);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.el-nav__link:hover {
+  color: var(--el-cream);
+  background: rgba(0, 140, 255, 0.08);
+  box-shadow: inset 0 0 10px rgba(0, 140, 255, 0.10);
+}
+
+.el-nav__back {
+  font-size: 0.82rem;
+  color: rgba(247, 240, 245, 0.6);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(247, 240, 245, 0.10);
+  transition: all 0.3s ease;
+}
+
+.el-nav__back:hover {
+  color: var(--el-cream);
+  border-color: rgba(247, 240, 245, 0.28);
+}
+
+.el-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--el-blue);
+  color: var(--el-cream);
+  font-weight: 700;
+  font-size: 0.86rem;
+  border: 1.5px solid var(--el-blue);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 12px var(--el-blue-glow);
+}
+
+.el-nav__cta:hover {
+  background: rgba(0, 140, 255, 0.08);
+  color: var(--el-blue);
+  box-shadow: 0 0 22px var(--el-blue-glow);
+}
+
+.el-nav__mobile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(0, 140, 255, 0.18);
+  border-radius: 12px;
+  color: var(--el-blue);
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .el-nav__mobile-btn {
+    display: none;
+  }
+}
+
+.el-nav__drawer {
+  position: fixed;
+  top: 76px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100vh - 76px);
+  background: rgba(10, 18, 36, 0.98);
+  border-top: 1px solid rgba(0, 140, 255, 0.10);
+  padding: 2rem clamp(1rem, 4vw, 2.5rem) 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.el-nav__drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.el-nav__drawer-links a,
+.el-nav__drawer-links button {
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  text-align: start;
+  color: rgba(247, 240, 245, 0.85);
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  transition: all 0.3s ease;
+}
+
+.el-nav__drawer-links a:hover,
+.el-nav__drawer-links button:hover {
+  background: rgba(0, 140, 255, 0.10);
+  color: var(--el-blue);
+}
+
+.el-nav__drawer-divider {
+  height: 1px;
+  background: rgba(0, 140, 255, 0.10);
+  margin: 1.5rem 0;
+}
+
+.el-nav__drawer-buttons {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.el-nav__drawer-buttons .el-nav__back,
+.el-nav__drawer-buttons .el-nav__cta {
+  font-size: 0.7rem;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- 3. HERO --------------------------------------------------------- */
+.el-hero {
+  position: relative;
+  min-height: clamp(640px, 88vh, 920px);
+  padding-top: 120px;
+  padding-bottom: 80px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(180deg, rgba(0, 140, 255, 0.2) 0%, #0A1224 100%),
+    url('/electricity/grid.png');
+  background-size: 800px auto;
+  background-repeat: repeat;
+}
+
+.el-hero__grid {
+  position: absolute;
+  inset: 0;
+  
+  opacity: 0.25;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.el-hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .el-hero__inner {
+    grid-template-columns: 1.25fr 1fr;
+  }
+}
+
+.el-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 140, 255, 0.30);
+  background: rgba(0, 140, 255, 0.07);
+  color: var(--el-blue-soft);
+  font-size: 0.78rem;
+  letter-spacing: 0.10em;
+  font-weight: 700;
+}
+
+.el-hero__eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--el-blue);
+  box-shadow: 0 0 12px var(--el-blue);
+}
+
+.el-hero__heading {
+  font-family: 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--el-cream);
+  margin: 1.25rem 0 1rem;
+}
+
+.el-hero__heading .el-hl {
+  color: var(--el-blue);
+  display: inline-block;
+  position: relative;
+  text-shadow: 0 0 32px rgba(0, 140, 255, 0.55);
+}
+
+.el-hero__body {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.72);
+  max-width: 620px;
+  margin-bottom: 2rem;
+}
+
+.el-hero__cta-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.el-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+}
+
+.el-btn--primary {
+  background: var(--el-blue);
+  color: var(--el-cream);
+  border: 1px solid var(--el-blue);
+  box-shadow: 0 10px 30px -8px var(--el-blue-glow);
+}
+
+.el-btn--primary:hover {
+  background: transparent;
+  color: var(--el-blue);
+  border-color: var(--el-blue);
+  box-shadow:
+    0 0 38px 4px var(--el-blue-glow),
+    0 0 0 7px rgba(0, 140, 255, 0.12),
+    inset 0 0 18px rgba(0, 140, 255, 0.22);
+}
+
+.el-btn--ghost {
+  background: rgba(247, 240, 245, 0.04);
+  color: var(--el-cream);
+  border-color: rgba(247, 240, 245, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.el-btn--ghost:hover {
+  background: rgba(247, 240, 245, 0.08);
+  border-color: rgba(0, 140, 255, 0.55);
+  color: var(--el-blue-soft);
+}
+
+.el-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Hero side visual — animated bolt monogram in a glowing well */
+.el-hero__visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 520px;
+  margin-inline: auto;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.el-hero__visual::before {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--el-blue-glow), transparent 65%);
+  filter: blur(25px);
+  z-index: -1;
+  animation: el-pulse 4s ease-in infinite;
+}
+
+.el-hero__visual.video {
+  transform: translateY(-50px) scale(1.2);
+}
+
+.el-hero__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 140, 255, 0.18);
+  box-shadow: inset 0 0 60px rgba(0, 140, 255, 0.10);
+}
+
+.el-hero__ring--mid {
+  inset: 12%;
+  border-color: rgba(0, 140, 255, 0.24);
+}
+
+.el-hero__ring--inner {
+  inset: 24%;
+  border-color: rgba(0, 140, 255, 0.34);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 75%;
+  z-index: -1;
+}
+
+.el-hero__bolt {
+  position: relative;
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px var(--el-blue-glow));
+  animation: el-float 7s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes el-pulse {
+
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes el-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .el-hero__bolt,
+  .el-hero__visual::before {
+    animation: none;
+  }
+}
+
+.el-hero__stats {
+  margin-top: 2.4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem 1.25rem;
+  max-width: 580px;
+}
+
+.el-hero__stat {
+  border-inline-start: 2px solid var(--el-blue);
+  padding-inline-start: 0.85rem;
+}
+
+.el-hero__stat-num {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--el-cream);
+  line-height: 1.1;
+}
+
+.el-hero__stat-lbl {
+  font-size: 0.74rem;
+  color: rgba(247, 240, 245, 0.55);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- 4. SECTION CHROME ---------------------------------------------- */
+.el-section {
+  position: relative;
+  padding: clamp(72px, 10vw, 130px) 0;
+}
+
+.el-section__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+.el-section__head {
+  text-align: center;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.el-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  color: var(--el-blue);
+  text-transform: uppercase;
+}
+
+.el-eyebrow::before,
+.el-eyebrow::after {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: rgba(0, 140, 255, 0.5);
+}
+
+.el-h2 {
+  font-family: 'VIP Hakm', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--el-cream);
+  margin: 0.85rem 0;
+}
+
+.el-h2 .el-hl {
+  color: var(--el-blue);
+  text-shadow: 0 0 28px rgba(0, 140, 255, 0.7);
+}
+
+.el-lede {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.7);
+}
+
+/* ---------- 5. SERVICES CAROUSEL -------------------------------------------
+   Inline horizontal carousel — all cards live on a single track that auto-
+   translates left→right at ~1 card / 2.5s. The viewport masks edges with a
+   gradient fade. Drag with the pointer to override; release resumes motion. */
+
+.el-svc-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Soft edge fade so cards melt into the section bg instead of clipping. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  padding: 60px 0;
+  /* Reserve room so the hover scale doesn't clip vertically. */
+}
+
+.el-svc-carousel.is-dragging {
+  cursor: grabbing;
+}
+
+.el-svc-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 28px;
+  will-change: transform;
+  /* No CSS transition — JS drives transform every frame. */
+}
+
+.el-svc-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(220px, 18vw, 300px);
+  height: 380px;
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(15, 26, 51, 0.6) 0%, rgba(10, 18, 36, 0.85) 100%);
+  border: 1px solid rgba(247, 240, 245, 0.07);
+  border-top: 1px solid rgba(247, 240, 245, 0.14);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s ease;
+  box-shadow: 0 10px 26px -14px rgba(0, 0, 0, 0.55);
+}
+
+.el-svc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% -20%, var(--el-blue-glow), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.el-svc-card::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--el-blue) 50%, transparent);
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 3;
+}
+
+.el-svc-card.is-hovered {
+  transform: scale(1.3);
+  border-color: rgba(0, 140, 255, 0.25);
+  box-shadow:
+    0px 0px 40px rgba(0, 140, 255, 0.1);
+  z-index: 5;
+}
+
+.el-svc-card.is-hovered::before {
+  opacity: 1;
+}
+
+.el-svc-card.is-hovered::after {
+  opacity: 1;
+}
+
+/* Background image — fades in on hover only */
+.el-svc-card__img-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.el-svc-card.is-hovered .el-svc-card__img-wrap {
+  opacity: 0.75;
+}
+
+.el-svc-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* All service photos render in black & white — keeps the carousel
+     chromatically loyal to the blue/ink palette of the sub-brand. */
+  filter: grayscale(1) contrast(1.05);
+  -webkit-filter: grayscale(1) contrast(1.05);
+}
+
+/* Dark overlay anchors readability of the bottom-right content cluster. */
+.el-svc-card__img-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(215deg,
+      rgba(10, 18, 36, 0.15) 0%,
+      rgba(10, 18, 36, 0.55) 45%,
+      rgba(10, 18, 36, 0.92) 85%,
+      rgba(10, 18, 36, 1) 100%);
+  pointer-events: none;
+}
+
+/* Card content — default: top-start. Hover: anchored to bottom-end (RTL bottom-right). */
+.el-svc-card__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: start;
+  padding: 1.85rem 1.6rem 1.75rem;
+  gap: 0.45rem;
+  transition:
+    padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    align-items 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    justify-content 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.el-svc-card.is-hovered .el-svc-card__content {
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: end;
+  padding: 2rem 1.75rem 2.1rem;
+}
+
+.el-svc-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(0, 140, 255, 0.12);
+  color: var(--el-blue);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 140, 255, 0.24);
+  margin-bottom: 0.75rem;
+  transition: all 0.45s ease;
+}
+
+.el-svc-card.is-hovered .el-svc-card__icon {
+  background: var(--el-blue);
+  color: var(--el-cream);
+  box-shadow: 0 0 28px var(--el-blue-glow);
+}
+
+.el-svc-card__title {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--el-cream);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.el-svc-card__short {
+  font-size: 0.86rem;
+  color: var(--el-blue-soft);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.el-svc-card__body {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.68);
+  margin: 0.35rem 0 0;
+  max-width: 280px;
+}
+
+.el-svc-card.is-hovered .el-svc-card__body {
+  color: rgba(247, 240, 245, 0.85);
+}
+
+@media (max-width: 640px) {
+  .el-svc-card {
+    width: 68vw;
+    height: 360px;
+  }
+}
+
+/* ---------- 6. PROMISE STATS ----------------------------------------------- */
+.el-promise {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .el-promise {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .el-promise {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.el-promise__card {
+  background: linear-gradient(180deg, rgba(0, 140, 255, 0.05), transparent 50%), rgba(15, 26, 51, 0.5);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-radius: 20px;
+  padding: 1.85rem 1.5rem;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.el-promise__card:hover {
+  border-color: rgba(0, 140, 255, 0.45);
+  transform: translateY(-4px);
+  background: linear-gradient(180deg, rgba(0, 140, 255, 0.10), transparent 50%), rgba(15, 26, 51, 0.65);
+}
+
+.el-promise__stat {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--el-blue);
+  line-height: 1;
+  margin-bottom: 0.55rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 24px rgba(0, 140, 255, 0.45);
+}
+
+.el-promise__stat-lbl {
+  font-size: 0.75rem;
+  color: rgba(247, 240, 245, 0.5);
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.el-promise__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--el-cream);
+  margin-bottom: 0.55rem;
+}
+
+.el-promise__body {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.65);
+}
+
+/* ---------- 7. PILLARS (Vision / Mission / Goal) — kept at END --------------- */
+.el-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .el-pillars {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.el-pillar {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15, 26, 51, 0.4), rgba(10, 18, 36, 0.7));
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  border-top: 1px solid rgba(247, 240, 245, 0.16);
+  border-radius: 22px;
+  padding: 2rem 1.85rem;
+  overflow: hidden;
+  transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  isolation: isolate;
+}
+
+.el-pillar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% -10%, var(--el-blue-glow), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  z-index: -1;
+}
+
+.el-pillar:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 140, 255, 0.40);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 140, 255, 0.14);
+}
+
+.el-pillar:hover::before {
+  opacity: 1;
+}
+
+.el-pillar__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(0, 140, 255, 0.12);
+  color: var(--el-blue-soft);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.el-pillar__label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--el-blue);
+  box-shadow: 0 0 10px var(--el-blue);
+}
+
+.el-pillar__title {
+  font-size: 1.3rem;
+  color: var(--el-cream);
+  margin-bottom: 0.85rem;
+  line-height: 1.3;
+}
+
+.el-pillar__body {
+  font-size: 0.96rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.72);
+}
+
+/* ---------- 8. VALUES (Compact list — kept at END before pillars) ----------- */
+.el-values {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .el-values {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .el-values {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.el-value {
+  position: relative;
+  padding: 1.5rem 1.25rem;
+  border-radius: 18px;
+  border: 1px solid rgba(247, 240, 245, 0.08);
+  background: rgba(15, 26, 51, 0.42);
+  transition: all 0.4s ease;
+}
+
+.el-value:hover {
+  border-color: rgba(0, 140, 255, 0.40);
+  background: rgba(15, 26, 51, 0.62);
+}
+
+.el-value__num {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--el-blue-soft);
+  letter-spacing: 0.10em;
+  margin-bottom: 0.65rem;
+}
+
+.el-value__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--el-cream);
+  margin-bottom: 0.4rem;
+}
+
+.el-value__body {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: rgba(247, 240, 245, 0.65);
+}
+
+/* ---------- 9. CTA BANNER --------------------------------------------------- */
+.el-cta {
+  position: relative;
+  border-radius: 28px;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(0, 140, 255, 0.22), transparent 50%),
+    linear-gradient(135deg, rgba(0, 140, 255, 0.05), rgba(15, 26, 51, 0.92));
+  border: 2.5px solid rgba(0, 140, 255, 0.28);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  isolation: isolate;
+}
+
+@media (min-width: 992px) {
+  .el-cta {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.el-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/electricity/pattern.png');
+  background-size: 720px auto;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.el-cta__title {
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  color: var(--el-cream);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.el-cta__title .el-hl {
+  color: var(--el-blue);
+  text-shadow: 0 0 22px rgba(0, 140, 255, 0.7);
+}
+
+.el-cta__body {
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.78);
+}
+
+.el-cta__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.el-cta__contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.1rem;
+  background: rgba(10, 18, 36, 0.5);
+  border: 1px solid rgba(0, 140, 255, 0.18);
+  border-radius: 14px;
+  color: var(--el-cream);
+  font-size: 0.92rem;
+  transition: all 0.35s ease;
+}
+
+.el-cta__contact-item:hover {
+  border-color: var(--el-blue);
+  background: rgba(10, 18, 36, 0.75);
+}
+
+.el-cta__contact-item svg {
+  flex-shrink: 0;
+  color: var(--el-blue);
+}
+
+.el-cta__contact-label {
+  font-size: 0.68rem;
+  color: rgba(247, 240, 245, 0.45);
+  letter-spacing: 0.06em;
+  display: block;
+}
+
+/* ---------- 10. FOOTER ------------------------------------------------------ */
+.el-footer {
+  position: relative;
+  background: linear-gradient(180deg, var(--el-ink), #050912);
+  border-top: 1px solid rgba(0, 140, 255, 0.12);
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.el-footer::before {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  inset-inline-start: 50%;
+  width: 800px;
+  height: 800px;
+  background-image: url('/electricity/Logo Mark.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.035;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.el-footer__inner {
+  position: relative;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+.el-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(247, 240, 245, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .el-footer__grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  }
+}
+
+.el-footer__brand img {
+  height: 60px;
+  width: auto;
+  margin-bottom: 1rem;
+  filter: brightness(2) saturate(0%) opacity(25%);
+  transition: all 0.5s ease-in-out;
+}
+
+.el-footer__brand img:hover {
+  filter: none;
+}
+
+.el-footer__desc {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(247, 240, 245, 0.55);
+  max-width: 320px;
+  margin-bottom: 1.25rem;
+}
+
+.el-footer__socials {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.el-footer__social {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(247, 240, 245, 0.05);
+  border: 1px solid rgba(247, 240, 245, 0.10);
+  color: rgba(247, 240, 245, 0.65);
+  transition: all 0.3s ease;
+}
+
+.el-footer__social:hover {
+  background: var(--el-blue);
+  border-color: var(--el-blue);
+  color: var(--el-cream);
+  transform: translateY(-3px);
+}
+
+.el-footer__col-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--el-cream);
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.el-footer__col-title::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--el-blue);
+  box-shadow: 0 0 8px var(--el-blue);
+}
+
+.el-footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.el-footer__link {
+  font-size: 0.88rem;
+  color: rgba(247, 240, 245, 0.65);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.el-footer__link:hover {
+  color: var(--el-blue-soft);
+  text-shadow: 0 0 10px rgba(0, 140, 255, 0.55);
+}
+
+.el-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  font-size: 0.78rem;
+  color: rgba(247, 240, 245, 0.45);
+}
+
+.el-footer__bottom-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.el-footer__bottom a {
+  transition: color 0.3s ease;
+}
+
+.el-footer__bottom a:hover {
+  color: var(--el-blue-soft);
+}
+
+/* ---------- 11. RESPONSIVE TWEAKS ------------------------------------------ */
+@media (max-width: 768px) {
+  .el-hero {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+
+  .el-hero__inner {
+    gap: 2.5rem;
+  }
+
+  .el-hero__visual {
+    max-width: 360px;
+  }
+
+  .el-hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
