@@ -30,8 +30,8 @@ const ClockIcon = () => (
 
 /* ── Animation variants ── */
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 30, filter: 'blur(20px)' },
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
 };
 
 const staggerContainer = {
@@ -42,8 +42,8 @@ const staggerContainer = {
 };
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export default function ContactUs() {
@@ -109,7 +109,7 @@ export default function ContactUs() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         variants={fadeUp}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
       >
         <span className="contact-eyebrow">تواصل معنا</span>
         <h2 className="contact-heading">
@@ -148,7 +148,7 @@ export default function ContactUs() {
                   <span className="contact-services__icon-wrap">
                     <CheckIcon />
                   </span>
-                  ميزة من ميزات خدماتنا
+                  {i === 0 ? "رد خلال 24 ساعة كحد أقصى" : i === 1 ? "فريق استشاري متخصص لكل قطاع" : i === 2 ? "حماية بياناتك وسريتها بالكامل" : "خدمة عملاء مخصصة بخمس قطاعات"}
                 </motion.li>
               ))}
             </motion.ul>
@@ -204,10 +204,10 @@ export default function ContactUs() {
         {/* LEFT column in RTL (second in DOM) → Form */}
         <motion.div
           className="contact-form-wrapper"
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -40, filter: 'blur(20px)' }}
+          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="contact-form-card">
             <div className="contact-form-card__pattern"></div>
