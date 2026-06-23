@@ -6,15 +6,11 @@ export default defineConfig({
   server: { port: 5173, open: true },
   build: {
     chunkSizeWarningLimit: 1000,
+    base: '/',
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          // This splits every package in node_modules into its own chunk
-          if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[1].split('/')[0].toString();
-          }
-        },
+        manualChunks: undefined,
       },
-    },
-  },
+    }
+  }
 });
