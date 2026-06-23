@@ -74,4 +74,3 @@ export const api = {
   del:    (path, opts)       => request(path, { ...opts, method: 'DELETE' }),
 };
 
-export const API_BASE_URL = BASE_URL;

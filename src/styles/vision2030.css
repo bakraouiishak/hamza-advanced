@@ -39,7 +39,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-image: url('images/vision2030/background.jpg');
+  background-image: url('/images/vision2030/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

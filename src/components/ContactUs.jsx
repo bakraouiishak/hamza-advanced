@@ -264,6 +264,7 @@ export default function ContactUs() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       onFocus={handleFocus}
+                      autocomplete
                     />
                   </div>
 
@@ -278,6 +279,7 @@ export default function ContactUs() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       onFocus={handleFocus}
+                      autocomplete
                     />
                   </div>
 
