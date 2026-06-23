@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
 import PartnersCarousel from './components/PartnersCarousel.jsx';
@@ -119,6 +120,7 @@ export default function App() {
         <Route path="/sectors/advertising/marketplace/admin/*" element={<MarketplaceAdmin />} />
       </Routes>
       {!hideGlobalChrome && <Footer />}
+      <SpeedInsights />
     </>
   );
 }
