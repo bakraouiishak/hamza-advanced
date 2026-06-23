@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-three/drei": "^9.117.3",
     "@react-three/fiber": "^8.17.10",
+    "@vercel/speed-insights": "^2.0.0",
     "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",
     "motion": "^11.11.0",
